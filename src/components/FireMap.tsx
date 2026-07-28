@@ -305,6 +305,17 @@ export function FireMap({
       if (cooledSource) cooledSource.setData(toPoints(cooled, 'cooled'))
       console.log('[FireMap] Mapa listo - fuentes inicializadas con', { active: active.length, cooled: cooled.length })
       
+      // Asegurar que todas las capas son visibles
+      const layerIds = ['cooled-glow', 'cooled-core', 'active-halo', 'active-core']
+      layerIds.forEach(id => {
+        if (map.getLayer(id)) {
+          map.setLayoutProperty(id, 'visibility', 'visible')
+          console.log('[FireMap] Capa', id, 'visibilidad:', map.getLayoutProperty(id, 'visibility'))
+        } else {
+          console.error('[FireMap] Capa', id, 'NO existe')
+        }
+      })
+      
       onReadyRef.current()
     })
 
