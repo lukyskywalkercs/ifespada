@@ -324,7 +324,8 @@ export function FireMap({
       const allLayers = map.getStyle().layers?.map(l => l.id) || []
       console.log('[FireMap] Todas las capas:', allLayers)
       
-      ['cooled-glow', 'active-halo', 'cooled-core', 'active-core'].forEach(id => {
+      const layerIds: string[] = ['cooled-glow', 'active-halo', 'cooled-core', 'active-core']
+      layerIds.forEach((id: string) => {
         if (map.getLayer(id)) {
           map.setLayoutProperty(id, 'visibility', 'visible')
         }
