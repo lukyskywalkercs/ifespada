@@ -304,25 +304,29 @@ export function FireMap({
       // Forzar actualización inicial de datos ahora que el mapa está listo
       const activeSource = map.getSource('active') as GeoJSONSource | undefined
       const cooledSource = map.getSource('cooled') as GeoJSONSource | undefined
-      if (activeSource) activeSource.setData(toPoints(active, 'active'))
-      if (cooledSource) cooledSource.setData(toPoints(cooled, 'cooled'))
-      console.log('[FireMap] Mapa listo - fuentes inicializadas con', { active: active.length, cooled: cooled.length })
       
-      // Asegurar que todas las capas son visibles y en el orden correcto
-      const layerIds = ['cooled-glow', 'active-halo', 'cooled-core', 'active-core']
-      console.log('[FireMap] Orden de capas en el mapa:', map.getStyle().layers?.map(l => l.id))
+      console.log('[FireMap] Mapa listo - actualizando fuentes con', { active: active.length, cooled: cooled.length })
       
-      layerIds.forEach(id => {
-        const layer = map.getLayer(id)
-        if (layer) {
-          const visibility = map.getLayoutProperty(id, 'visibility')
-          console.log(`[FireMap] Capa ${id}: existe=${!!layer}, visibilidad=${visibility}`)
-          if (visibility !== 'visible') {
-            map.setLayoutProperty(id, 'visibility', 'visible')
-            console.log(`[FireMap] Capa ${id} forzada a visible`)
-          }
-        } else {
-          console.error('[FireMap] Capa', id, 'NO existe')
+      if (activeSource) {
+        activeSource.setData(toPoints(active, 'active'))
+        console.log('[FireMap] Fuente active actualizada con', active.length, 'puntos')
+      }
+      if (cooledSource) {
+        cooledSource.setData(toPoints(cooled, 'cooled'))
+        console.log('[FireMap] Fuente cooled actualizada con', cooled.length, 'puntos')
+      }
+      
+      // Forzar repaint inmediato
+      map.triggerRepaint()
+      console.log('[FireMap] triggerRepaint llamado')
+      
+      // Verificar que las capas existen y son visibles
+      const allLayers = map.getStyle().layers?.map(l => l.id) || []
+      console.log('[FireMap] Todas las capas:', allLayers)
+      
+      ['cooled-glow', 'active-halo', 'cooled-core', 'active-core'].forEach(id => {
+        if (map.getLayer(id)) {
+          map.setLayoutProperty(id, 'visibility', 'visible')
         }
       })
       
