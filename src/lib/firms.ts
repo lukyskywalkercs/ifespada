@@ -1,9 +1,9 @@
 import type { Detection } from '../types'
 
-const WEST = -9.55 // ampliado para españa temporalmente
-const EAST = 3.05
-const SOUTH = 36.7
-const NORTH = 43.05
+const WEST = -0.55 // Restauramos coordenadas reales Espadà
+const EAST = -0.05
+const SOUTH = 39.7
+const NORTH = 40.05
 
 const ACTIVE_FEEDS = [
   {
@@ -113,9 +113,13 @@ async function fetchFeed(path: string, id: string, kind: 'viirs' | 'modis') {
     throw new Error(`${id}: formato de respuesta incorrecto (no es CSV válido)`)
   }
   
-  return parseCsv(text)
-    .map((row) => rowToDetection(row, kind, id))
-    .filter((d): d is Detection => Boolean(d))
+  const parsed = parseCsv(text)
+  const mapped = parsed.map((row) => rowToDetection(row, kind, id))
+  const filtered = mapped.filter((d): d is Detection => Boolean(d))
+  
+  console.log(`[firms.ts] ${id} -> Crudos: ${parsed.length} | Tras filtrar BoundingBox: ${filtered.length}`)
+  
+  return filtered
 }
 
 export async function fetchLiveSnapshot(): Promise<{

@@ -188,7 +188,10 @@ export default function App() {
                     aria-pressed={layers[item.key]}
                   >
                     <span className={`swatch ${item.key}`} aria-hidden />
-                    {item.label}
+                    {item.label}{' '}
+                    <strong className="legend-count">
+                      ({item.key === 'active' ? data.active.length : item.key === 'cooled' ? data.cooled.length : item.key === 'confined' ? confined.length : evacuated.length})
+                    </strong>
                   </button>
                 ))}
               </div>
