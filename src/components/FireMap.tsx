@@ -4,7 +4,6 @@ import {
   Marker,
   NavigationControl,
   Popup as MapLibrePopup,
-  setWorkerUrl,
   type GeoJSONSource,
   type MapLayerMouseEvent,
   type Map as MapInstance,
