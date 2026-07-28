@@ -51,6 +51,8 @@ export function FireMap({
   layers,
   onReady,
 }: FireMapProps) {
+  console.log('[FireMap] Render con', { active: active.length, cooled: cooled.length, towns: municipalities.length })
+  
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapInstance | null>(null)
   const popupRef = useRef<Popup | null>(null)
