@@ -3,7 +3,6 @@ import { FireMap } from './components/FireMap'
 import {
   fetchLiveSnapshot,
   formatNumber,
-  latestAcquisition,
 } from './lib/firms'
 import type { FirePayload, LayerKey } from './types'
 import './App.css'
