@@ -1,0 +1,154 @@
+[
+  {
+    "name": "La Vall d'Uixó",
+    "query": "La Vall d'Uixó",
+    "status": "confined",
+    "lat": 39.8235837,
+    "lon": -0.2316995,
+    "display_name": "la Vall d'Uixó, la Plana Baixa, Castelló / Castellón, Comunitat Valenciana, España"
+  },
+  {
+    "name": "Onda",
+    "query": "Onda, Castellón",
+    "status": "confined",
+    "lat": 39.965214,
+    "lon": -0.2625745,
+    "display_name": "Onda, la Plana Baixa, Castelló / Castellón, Comunitat Valenciana, 12200, España"
+  },
+  {
+    "name": "Betxí",
+    "query": "Betxí",
+    "status": "confined",
+    "lat": 39.9288397,
+    "lon": -0.1974253,
+    "display_name": "Betxí, la Plana Baixa, Castelló / Castellón, Comunitat Valenciana, 12549, España"
+  },
+  {
+    "name": "Aín",
+    "query": "Aín, Castellón",
+    "status": "evacuated",
+    "lat": 39.9007811,
+    "lon": -0.3409807,
+    "display_name": "Aín, la Plana Baixa, Castelló / Castellón, Comunitat Valenciana, 12222, España"
+  },
+  {
+    "name": "Alcudia de Veo",
+    "query": "Alcudia de Veo",
+    "status": "evacuated",
+    "lat": 39.9158376,
+    "lon": -0.354769,
+    "display_name": "Alcudia de Veo, la Plana Baixa, Castelló / Castellón, Comunitat Valenciana, España"
+  },
+  {
+    "name": "Alfondeguilla",
+    "query": "Alfondeguilla",
+    "status": "evacuated",
+    "lat": 39.8376893,
+    "lon": -0.2690126,
+    "display_name": "Alfondeguilla, la Plana Baixa, Castelló / Castellón, Comunitat Valenciana, España"
+  },
+  {
+    "name": "Tales",
+    "query": "Tales, Castellón",
+    "status": "evacuated",
+    "lat": 39.9480872,
+    "lon": -0.3076291,
+    "display_name": "Tales, la Plana Baixa, Castelló / Castellón, Comunitat Valenciana, 12221, España"
+  },
+  {
+    "name": "Eslida",
+    "query": "Eslida",
+    "status": "evacuated",
+    "lat": 39.8794321,
+    "lon": -0.3079326,
+    "display_name": "Eslida, la Plana Baixa, Castelló / Castellón, Comunitat Valenciana, España"
+  },
+  {
+    "name": "La Vilavella",
+    "query": "La Vilavella",
+    "status": "evacuated",
+    "lat": 39.8587438,
+    "lon": -0.1831882,
+    "display_name": "la Vilavella, la Plana Baixa, Castelló / Castellón, Comunitat Valenciana, 12526, España"
+  },
+  {
+    "name": "Artana",
+    "query": "Artana",
+    "status": "evacuated",
+    "lat": 39.8911264,
+    "lon": -0.2576603,
+    "display_name": "Artana, la Plana Baixa, Castelló / Castellón, Comunitat Valenciana, 12527, España"
+  },
+  {
+    "name": "Sueras",
+    "query": "Sueras",
+    "status": "evacuated",
+    "lat": 39.952339,
+    "lon": -0.3322962,
+    "display_name": "Suera / Sueras, la Plana Baixa, Castelló / Castellón, Comunitat Valenciana, España"
+  },
+  {
+    "name": "Villamalur",
+    "query": "Villamalur",
+    "status": "evacuated",
+    "lat": 39.9648022,
+    "lon": -0.3953669,
+    "display_name": "Villamalur, El Alto Mijares, Castelló / Castellón, Comunitat Valenciana, España"
+  },
+  {
+    "name": "Torralba del Pinar",
+    "query": "Torralba del Pinar",
+    "status": "evacuated",
+    "lat": 39.9887744,
+    "lon": -0.4382786,
+    "display_name": "Torralba del Pinar, El Alto Mijares, Castelló / Castellón, Comunitat Valenciana, España"
+  },
+  {
+    "name": "Ayódar",
+    "query": "Ayódar",
+    "status": "evacuated",
+    "lat": 39.9985635,
+    "lon": -0.3744545,
+    "display_name": "Ayódar, El Alto Mijares, Castelló / Castellón, Comunitat Valenciana, 12224, España"
+  },
+  {
+    "name": "Fuentes de Ayódar",
+    "query": "Fuentes de Ayódar",
+    "status": "evacuated",
+    "lat": 40.0208981,
+    "lon": -0.4197803,
+    "display_name": "Fuentes de Ayódar, El Alto Mijares, Castelló / Castellón, Comunitat Valenciana, 12225, España"
+  },
+  {
+    "name": "Chóvar",
+    "query": "Chóvar",
+    "status": "evacuated",
+    "lat": 39.8509369,
+    "lon": -0.3200757,
+    "display_name": "Chóvar, l'Alt Palància, Castelló / Castellón, Comunitat Valenciana, España"
+  },
+  {
+    "name": "Azuébar",
+    "query": "Azuébar",
+    "status": "evacuated",
+    "lat": 39.8344623,
+    "lon": -0.3692385,
+    "display_name": "Azuébar, l'Alt Palància, Castelló / Castellón, Comunitat Valenciana, 12490, España"
+  },
+  {
+    "name": "Almedíjar",
+    "query": "Almedíjar",
+    "status": "evacuated",
+    "lat": 39.8723007,
+    "lon": -0.4093054,
+    "display_name": "Almedíjar, l'Alt Palància, Castelló / Castellón, Comunitat Valenciana, España"
+  },
+  {
+    "name": "Artesa",
+    "query": "Artesa, Onda",
+    "status": "evacuated",
+    "lat": 39.958139,
+    "lon": -0.2882703,
+    "display_name": "Artesa, Onda, la Plana Baixa, Castelló / Castellón, Comunitat Valenciana, 12221, España"
+  }
+]

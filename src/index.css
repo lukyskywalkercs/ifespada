@@ -1,0 +1,95 @@
+:root {
+  color-scheme: light;
+  --ink: #1c1917;
+  --ink-soft: #57534e;
+  --ink-faint: #a8a29e;
+  --paper: #f7f4ef;
+  --paper-elevated: rgba(255, 252, 248, 0.82);
+  --stroke: rgba(28, 25, 23, 0.08);
+  --stroke-strong: rgba(28, 25, 23, 0.14);
+  --ember: #e4572e;
+  --ember-soft: #f4a261;
+  --cooled: #78716c;
+  --confined: #1d4ed8;
+  --evacuated: #b45309;
+  --shadow-float:
+    0 1px 1px rgba(28, 25, 23, 0.04),
+    0 8px 24px rgba(28, 25, 23, 0.08),
+    0 24px 48px rgba(28, 25, 23, 0.06);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+  font-family: var(--font-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+  height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+  background: none;
+}
+
+.maplibregl-popup-content {
+  padding: 0 !important;
+  border-radius: 14px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.maplibregl-popup-tip {
+  display: none !important;
+}
+
+.maplibregl-ctrl-attrib {
+  font-size: 10px !important;
+  background: rgba(255, 252, 248, 0.75) !important;
+  border-radius: 8px 0 0 0 !important;
+}
+
+.maplibregl-ctrl-group {
+  border: 1px solid var(--stroke-strong) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: var(--shadow-float) !important;
+  background: var(--paper-elevated) !important;
+  backdrop-filter: blur(16px);
+}
+
+.maplibregl-ctrl-group button {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

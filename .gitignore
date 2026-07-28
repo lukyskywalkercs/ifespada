@@ -1,0 +1,10 @@
+node_modules
+dist
+.DS_Store
+*.local
+firms_*.csv
+J1_*.csv
+J2_*.csv
+SUOMI_*.csv
+MODIS_*.csv
+firms_espadà.json
