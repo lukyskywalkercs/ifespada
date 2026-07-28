@@ -309,7 +309,7 @@ export function FireMap({
       const layerIds = ['cooled-glow', 'active-halo', 'cooled-core', 'active-core']
       console.log('[FireMap] Orden de capas en el mapa:', map.getStyle().layers?.map(l => l.id))
       
-      layerIds.forEach((id, index) => {
+      layerIds.forEach(id => {
         const layer = map.getLayer(id)
         if (layer) {
           const visibility = map.getLayoutProperty(id, 'visibility')
