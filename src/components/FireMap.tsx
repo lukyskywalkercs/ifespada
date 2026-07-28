@@ -10,12 +10,12 @@ import {
   type Map as MapInstance,
   type Popup,
 } from 'maplibre-gl'
-import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { Detection, LayerKey, Municipality } from '../types'
 import { formatAcq } from '../lib/firms'
 
-setWorkerUrl(maplibreWorkerUrl)
+// NO establecer worker personalizado - usar el default de MapLibre
+// setWorkerUrl(...) causa problemas en producción (Netlify)
 
 interface FireMapProps {
   active: Detection[]

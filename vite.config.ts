@@ -7,6 +7,15 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['maplibre-gl'],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'maplibre-worker': ['maplibre-gl/dist/maplibre-gl-worker.mjs'],
+        },
+      },
+    },
+  },
   server: {
     port: 5173,
     proxy: {
