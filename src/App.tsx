@@ -286,66 +286,6 @@ export default function App() {
               </div>
             </section>
 
-            <section className="towns" aria-label="Municipios afectados">
-              <div className="towns-head">
-                <p className="eyebrow">Municipios</p>
-                <p className="towns-count">
-                  {confined.length} confinados · {evacuated.length} evacuados
-                </p>
-              </div>
-
-              <div className="town-group">
-                <p className="town-group-label">Confinados</p>
-                <div className="town-list">
-                  {confined.map((t) => (
-                    <div className="town" key={`c-${t.name}`}>
-                      <span className="town-name">{t.name}</span>
-                      <span className="badge confined">Confinado</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="town-group">
-                <p className="town-group-label">Evacuados</p>
-                <div className="town-list">
-                  {evacuated.map((t) => (
-                    <div className="town" key={`e-${t.name}`}>
-                      <span className="town-name">{t.name}</span>
-                      <span className="badge evacuated">Evacuado</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            <section className="sources" aria-label="Fuentes de datos">
-              <p className="eyebrow">Fuentes</p>
-              <ul>
-                <li>
-                  <strong>Focos en tiempo casi real</strong>
-                  <span>
-                    NASA FIRMS — satélites VIIRS (NOAA-20/21, Suomi-NPP) y MODIS.
-                    CSV NRT vía{' '}
-                    <a
-                      href="https://firms.modaps.eosdis.nasa.gov/"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      firms.modaps.eosdis.nasa.gov
-                    </a>
-                    . Latencia típica 1–3 h; auto-refresh cada 90 s.
-                  </span>
-                </li>
-                <li>
-                  <strong>Municipios y cifras Cecopi</strong>
-                  <span>
-                    Comunicados Cecopi / Generalitat Valenciana (parte 27 jul
-                    2026). No existe API pública Cecopi en vivo.
-                  </span>
-                </li>
-              </ul>
-            </section>
           </aside>
         </>
       )}
