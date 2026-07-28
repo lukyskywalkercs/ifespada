@@ -64,6 +64,14 @@ export function FireMap({
   layers,
   onReady,
 }: FireMapProps) {
+  console.log('[FireMap] Props recibidas:', {
+    activeCount: active.length,
+    cooledCount: cooled.length,
+    townsCount: municipalities.length,
+    layersActive: layers.active,
+    layersCooled: layers.cooled
+  })
+  
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapInstance | null>(null)
   const popupRef = useRef<Popup | null>(null)
