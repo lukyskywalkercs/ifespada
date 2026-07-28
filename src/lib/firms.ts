@@ -1,9 +1,9 @@
 import type { Detection } from '../types'
 
-const WEST = -0.55
-const EAST = -0.05
-const SOUTH = 39.7
-const NORTH = 40.05
+const WEST = -9.55 // ampliado para españa temporalmente
+const EAST = 3.05
+const SOUTH = 36.7
+const NORTH = 43.05
 
 const ACTIVE_FEEDS = [
   {
