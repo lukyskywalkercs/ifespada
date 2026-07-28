@@ -305,14 +305,27 @@ export function FireMap({
       const activeSource = map.getSource('active') as GeoJSONSource | undefined
       const cooledSource = map.getSource('cooled') as GeoJSONSource | undefined
       
-      console.log('[FireMap] Mapa listo - actualizando fuentes con', { active: active.length, cooled: cooled.length })
+      const activeGeoJSON = toPoints(active, 'active')
+      const cooledGeoJSON = toPoints(cooled, 'cooled')
+      
+      console.log('[FireMap] Mapa listo - actualizando fuentes')
+      console.log('[FireMap] Active GeoJSON:', JSON.stringify({
+        type: activeGeoJSON.type,
+        featureCount: activeGeoJSON.features.length,
+        firstFeature: activeGeoJSON.features[0]
+      }))
+      console.log('[FireMap] Cooled GeoJSON:', JSON.stringify({
+        type: cooledGeoJSON.type,
+        featureCount: cooledGeoJSON.features.length,
+        firstFeature: cooledGeoJSON.features[0]
+      }))
       
       if (activeSource) {
-        activeSource.setData(toPoints(active, 'active'))
+        activeSource.setData(activeGeoJSON)
         console.log('[FireMap] Fuente active actualizada con', active.length, 'puntos')
       }
       if (cooledSource) {
-        cooledSource.setData(toPoints(cooled, 'cooled'))
+        cooledSource.setData(cooledGeoJSON)
         console.log('[FireMap] Fuente cooled actualizada con', cooled.length, 'puntos')
       }
       
