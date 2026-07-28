@@ -311,13 +311,35 @@ export function FireMap({
 
   useEffect(() => {
     const map = mapRef.current
-    if (!map || !readyRef.current) return
-    ;(map.getSource('active') as GeoJSONSource | undefined)?.setData(
-      toPoints(active, 'active'),
-    )
-    ;(map.getSource('cooled') as GeoJSONSource | undefined)?.setData(
-      toPoints(cooled, 'cooled'),
-    )
+    if (!map || !readyRef.current) {
+      console.log('[FireMap] Mapa no listo para actualizar datos', { 
+        hasMap: !!map, 
+        isReady: readyRef.current,
+        activeCount: active.length,
+        cooledCount: cooled.length 
+      })
+      return
+    }
+    
+    console.log('[FireMap] Actualizando fuentes del mapa', {
+      active: active.length,
+      cooled: cooled.length
+    })
+    
+    const activeSource = map.getSource('active') as GeoJSONSource | undefined
+    const cooledSource = map.getSource('cooled') as GeoJSONSource | undefined
+    
+    if (!activeSource) {
+      console.error('[FireMap] Fuente "active" no existe')
+    } else {
+      activeSource.setData(toPoints(active, 'active'))
+    }
+    
+    if (!cooledSource) {
+      console.error('[FireMap] Fuente "cooled" no existe')
+    } else {
+      cooledSource.setData(toPoints(cooled, 'cooled'))
+    }
   }, [active, cooled])
 
   useEffect(() => {

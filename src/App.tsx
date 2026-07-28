@@ -64,7 +64,13 @@ export default function App() {
   })
 
   const applyLive = useCallback(async (base: FirePayload) => {
+    console.log('[App.tsx] applyLive - Iniciando carga de datos FIRMS en vivo')
     const snap = await fetchLiveSnapshot()
+    console.log('[App.tsx] applyLive - Datos recibidos:', {
+      active: snap.active.length,
+      cooled: snap.cooled.length,
+      latestPass: snap.latestPass
+    })
     setLiveOk(true)
     setLatestPass(snap.latestPass)
     setData({
