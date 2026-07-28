@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/api/firms/*"
+  to = "https://firms.modaps.eosdis.nasa.gov/data/active_fire/:splat"
+  status = 200
+  force = true
