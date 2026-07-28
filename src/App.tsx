@@ -138,15 +138,6 @@ export default function App() {
     return () => window.clearInterval(id)
   }, [data, refresh])
 
-  const confined = useMemo(
-    () => data?.municipalities.filter((m) => m.status === 'confined') ?? [],
-    [data],
-  )
-  const evacuated = useMemo(
-    () => data?.municipalities.filter((m) => m.status === 'evacuated') ?? [],
-    [data],
-  )
-
   const toggle = (key: LayerKey) => {
     setLayers((prev) => ({ ...prev, [key]: !prev[key] }))
   }
