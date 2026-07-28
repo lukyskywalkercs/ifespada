@@ -62,8 +62,20 @@ export function FireMap({
 
   useEffect(() => {
     const map = mapRef.current
-    if (!map || !readyRef.current) return
-    if (active.length === 0 && cooled.length === 0) return
+    console.log('[FireMap useEffect] Estado:', { hasMap: !!map, isReady: readyRef.current, activeCount: active.length, cooledCount: cooled.length })
+    
+    if (!map) {
+      console.error('[FireMap] No hay mapa')
+      return
+    }
+    if (!readyRef.current) {
+      console.warn('[FireMap] Mapa no listo aún')
+      return
+    }
+    if (active.length === 0 && cooled.length === 0) {
+      console.warn('[FireMap] Sin datos de focos')
+      return
+    }
 
     console.log('[FireMap] Creando ' + (active.length + cooled.length) + ' marcadores de focos')
 
