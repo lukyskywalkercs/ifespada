@@ -312,21 +312,24 @@ export function FireMap({
         console.log('[FireMap] Fuente cooled actualizada con', cooled.length, 'puntos')
       }
       
-      // AÑADIR capa de prueba temporal
-      if (!map.getLayer('test-point')) {
+      // AÑADIR capa de prueba con SYMBOL (más compatible que circle)
+      if (!map.getLayer('test-symbol')) {
         map.addSource('test-source', { type: 'geojson', data: testPoint })
         map.addLayer({
-          id: 'test-point',
-          type: 'circle',
+          id: 'test-symbol',
+          type: 'symbol',
           source: 'test-source',
+          layout: {
+            'text-field': '🔴',
+            'text-size': 24,
+            'text-anchor': 'center',
+            'text-offset': [0, 0],
+          },
           paint: {
-            'circle-radius': 15,
-            'circle-color': '#00ff00',
-            'circle-stroke-color': '#fff',
-            'circle-stroke-width': 2
+            'text-opacity': 1,
           }
         })
-        console.log('[FireMap] Capa de prueba AÑADIDA - deberías ver un punto verde brillante en el centro')
+        console.log('🔴 [FireMap] Capa de prueba SYMBOL AÑADIDA - deberías ver emojis rojos')
       }
       
       // Forzar repaint inmediato
