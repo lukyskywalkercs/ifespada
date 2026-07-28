@@ -86,9 +86,10 @@ export default function App() {
         const json = (await res.json()) as FirePayload
         if (cancelled) return
         
+        setData(json)
+
         try {
           setRefreshing(true)
-          // Solo si Live falla la app se queda vacía, quitando los focos locales
           const snap = await applyLive(json)
           setLatestPass(snap.latestPass)
         } catch (liveErr) {
@@ -98,11 +99,11 @@ export default function App() {
               ? `FIRMS en vivo no disponible (${liveErr.message}). API de NASA inalcanzable.`
               : 'FIRMS en vivo no disponible. API de NASA inalcanzable.',
           )
-          // Forzamos que el mapa no muestre datos locales de incendios si la API falla
+          
           setData({
             ...json,
-            active: [],
-            cooled: [],
+            active: json.active,
+            cooled: json.cooled,
           })
         } finally {
           if (!cancelled) setRefreshing(false)
