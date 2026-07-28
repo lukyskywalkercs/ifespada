@@ -165,7 +165,10 @@ export function FireMap({
     ro.observe(containerRef.current)
 
     map.on('load', () => {
-      console.log('[FireMap] Evento load - datos iniciales:', { active: active.length, cooled: cooled.length })
+      console.log('✅ [FireMap] Evento LOAD disparado - mapa inicializado correctamente')
+      console.log('[FireMap] Datos iniciales:', { active: active.length, cooled: cooled.length })
+      console.log('[FireMap] Zoom:', map.getZoom(), 'Center:', map.getCenter())
+      console.log('[FireMap] Canvas size:', map.getCanvas().width, 'x', map.getCanvas().height)
       
       // Añadimos fuentes con datos vacíos si aún no hay datos
       map.addSource('active', {
@@ -376,7 +379,17 @@ export function FireMap({
     })
 
     map.on('error', (e) => {
-      console.error('MapLibre error', e.error)
+      console.error('❌ [FireMap] ERROR del mapa:', e.error)
+    })
+    
+    map.on('style.loaderror', (e) => {
+      console.error('❌ [FireMap] Error cargando el estilo del mapa:', e)
+    })
+    
+    map.on('data', (e) => {
+      if (e.dataType === 'style') {
+        console.log('[FireMap] Datos del estilo cargados:', e)
+      }
     })
 
     mapRef.current = map
