@@ -25,8 +25,8 @@ function createFireMarkerElement(kind: 'active' | 'cooled', frp?: number) {
   const color = kind === 'active' ? '#e4572e' : '#78716c'
   
   el.style.backgroundColor = color
-  el.style.width = `${size}px`
-  el.style.height = `${size}px`
+  el.style.width = size + 'px'
+  el.style.height = size + 'px'
   el.style.borderRadius = '50%'
   el.style.border = '2px solid white'
   el.style.boxShadow = '0 2px 4px rgba(0,0,0,0.3)'
@@ -38,9 +38,9 @@ function createFireMarkerElement(kind: 'active' | 'cooled', frp?: number) {
 function makeTownEl(town: Municipality) {
   const el = document.createElement('button')
   el.type = 'button'
-  el.className = `town-marker town-marker--${town.status}`
-  el.setAttribute('aria-label', `${town.name}, ${town.status === 'confined' ? 'confinado' : 'evacuado'}`)
-  el.innerHTML = `<span class="town-marker__dot"></span><span class="town-marker__name">${town.name}</span>`
+  el.className = 'town-marker town-marker--' + town.status
+  el.setAttribute('aria-label', town.name + ', ' + (town.status === 'confined' ? 'confinado' : 'evacuado'))
+  el.innerHTML = '<span class="town-marker__dot"></span><span class="town-marker__name">' + town.name + '</span>'
   return el
 }
 
@@ -58,43 +58,49 @@ export function FireMap({
   const fireMarkersRef = useRef<Marker[]>([])
   const readyRef = useRef(false)
 
-  // Sincronizar marcadores de focos - UN ÚNICO EFECTO SIMPLE
   useEffect(() => {
     const map = mapRef.current
     if (!map || !readyRef.current) return
     if (active.length === 0 && cooled.length === 0) return
 
-    console.log(`[FireMap] Creando ${active.length + cooled.length} marcadores de focos`)
+    console.log('[FireMap] Creando ' + (active.length + cooled.length) + ' marcadores de focos')
 
-    // Eliminar marcadores anteriores
     fireMarkersRef.current.forEach(m => m.remove())
     fireMarkersRef.current = []
 
-    // Crear TODOS los marcadores
-    [...active, ...cooled].forEach((d, i) => {
-      const kind = i < active.length ? 'active' : 'cooled'
-      const el = createFireMarkerElement(kind, d.frp ?? undefined)
-      
+    active.forEach(d => {
+      const el = createFireMarkerElement('active', d.frp ?? undefined)
       el.addEventListener('click', (e) => {
         e.stopPropagation()
-        const title = kind === 'active' ? 'Foco activo' : 'Sin detección reciente'
         popupRef.current
           ?.setLngLat([d.lon, d.lat])
-          .setHTML(`<div class="popup"><h3>${title}</h3><p>${formatAcq(d.acq_date, d.acq_time)}</p></div>`)
+          .setHTML('<div class="popup"><h3>Foco activo</h3><p>' + formatAcq(d.acq_date, d.acq_time) + '</p></div>')
           .addTo(map)
       })
-      
       const marker = new Marker({ element: el, anchor: 'center' })
         .setLngLat([d.lon, d.lat])
         .addTo(map)
-      
+      fireMarkersRef.current.push(marker)
+    })
+
+    cooled.forEach(d => {
+      const el = createFireMarkerElement('cooled')
+      el.addEventListener('click', (e) => {
+        e.stopPropagation()
+        popupRef.current
+          ?.setLngLat([d.lon, d.lat])
+          .setHTML('<div class="popup"><h3>Sin deteccion reciente</h3><p>' + formatAcq(d.acq_date, d.acq_time) + '</p></div>')
+          .addTo(map)
+      })
+      const marker = new Marker({ element: el, anchor: 'center' })
+        .setLngLat([d.lon, d.lat])
+        .addTo(map)
       fireMarkersRef.current.push(marker)
     })
     
-    console.log(`[FireMap] ✓ ${fireMarkersRef.current.length} marcadores creados`)
+    console.log('[FireMap] ' + fireMarkersRef.current.length + ' marcadores creados')
   }, [active, cooled])
 
-  // Sincronizar marcadores de municipios
   useEffect(() => {
     const map = mapRef.current
     if (!map || !readyRef.current) return
@@ -111,10 +117,10 @@ export function FireMap({
       const el = makeTownEl(town)
       el.addEventListener('click', (ev) => {
         ev.stopPropagation()
-        const title = town.status === 'confined' ? 'Municipio confinado' : 'Núcleo evacuado'
+        const title = town.status === 'confined' ? 'Municipio confinado' : 'Nucleo evacuado'
         popupRef.current
           ?.setLngLat([town.lon, town.lat])
-          .setHTML(`<div class="popup"><h3>${town.name}</h3><p>${title}</p></div>`)
+          .setHTML('<div class="popup"><h3>' + town.name + '</h3><p>' + title + '</p></div>')
           .addTo(map)
       })
 
@@ -125,7 +131,6 @@ export function FireMap({
     })
   }, [municipalities, layers.confined, layers.evacuated])
 
-  // Inicializar mapa
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
 
@@ -142,7 +147,7 @@ export function FireMap({
               'https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
             ],
             tileSize: 256,
-            attribution: '&copy; OpenStreetMap &copy; CARTO',
+            attribution: 'OpenStreetMap CARTO',
           },
         },
         layers: [{ id: 'carto', type: 'raster', source: 'carto' }],

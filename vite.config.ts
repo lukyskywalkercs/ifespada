@@ -7,15 +7,6 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['maplibre-gl'],
   },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'maplibre-worker': ['maplibre-gl/dist/maplibre-gl-worker.mjs'],
-        },
-      },
-    },
-  },
   server: {
     port: 5173,
     proxy: {
@@ -24,6 +15,20 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) =>
           path.replace(/^\/api\/firms/, '/data/active_fire'),
+      },
+      // Redirigir peticiones del worker de MapLibre al archivo correcto
+      '/assets/maplibre-gl-worker.mjs': {
+        target: 'http://localhost:5173',
+        rewrite: () => '/assets/maplibre-gl-worker.js',
+      },
+    },
+  },
+  preview: {
+    port: 4173,
+    proxy: {
+      '/assets/maplibre-gl-worker.mjs': {
+        target: 'http://localhost:4173',
+        rewrite: () => '/assets/maplibre-gl-worker.js',
       },
     },
   },
