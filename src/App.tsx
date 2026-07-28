@@ -138,6 +138,9 @@ export default function App() {
     return () => window.clearInterval(id)
   }, [data, refresh])
 
+  const confined = data?.municipalities.filter((m) => m.status === 'confined') ?? []
+  const evacuated = data?.municipalities.filter((m) => m.status === 'evacuated') ?? []
+
   const toggle = (key: LayerKey) => {
     setLayers((prev) => ({ ...prev, [key]: !prev[key] }))
   }
