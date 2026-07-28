@@ -188,7 +188,47 @@ export function FireMap({
     ro.observe(containerRef.current)
 
     map.on('load', () => {
+      console.log('[FireMap load] Mapa cargado, creando marcadores con', active.length + cooled.length, 'focos')
       readyRef.current = true
+      
+      // Crear marcadores AQUÍ MISMO cuando el mapa está listo
+      if (active.length > 0 || cooled.length > 0) {
+        fireMarkersRef.current.forEach(m => m.remove())
+        fireMarkersRef.current = []
+        
+        active.forEach(d => {
+          const el = createFireMarkerElement('active', d.frp ?? undefined)
+          el.addEventListener('click', (e) => {
+            e.stopPropagation()
+            popupRef.current
+              ?.setLngLat([d.lon, d.lat])
+              .setHTML('<div class="popup"><h3>Foco activo</h3><p>' + formatAcq(d.acq_date, d.acq_time) + '</p></div>')
+              .addTo(map)
+          })
+          const marker = new Marker({ element: el, anchor: 'center' })
+            .setLngLat([d.lon, d.lat])
+            .addTo(map)
+          fireMarkersRef.current.push(marker)
+        })
+        
+        cooled.forEach(d => {
+          const el = createFireMarkerElement('cooled')
+          el.addEventListener('click', (e) => {
+            e.stopPropagation()
+            popupRef.current
+              ?.setLngLat([d.lon, d.lat])
+              .setHTML('<div class="popup"><h3>Sin deteccion reciente</h3><p>' + formatAcq(d.acq_date, d.acq_time) + '</p></div>')
+              .addTo(map)
+          })
+          const marker = new Marker({ element: el, anchor: 'center' })
+            .setLngLat([d.lon, d.lat])
+            .addTo(map)
+          fireMarkersRef.current.push(marker)
+        })
+        
+        console.log('[FireMap load] ' + fireMarkersRef.current.length + ' marcadores creados')
+      }
+      
       onReady()
     })
 
