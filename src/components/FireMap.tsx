@@ -60,24 +60,8 @@ export function FireMap({
   const fireMarkersRef = useRef<Marker[]>([])
   const readyRef = useRef(false)
 
-  useEffect(() => {
-    const map = mapRef.current
-    console.log('[FireMap useEffect] Estado:', { hasMap: !!map, isReady: readyRef.current, activeCount: active.length, cooledCount: cooled.length })
-    
-    if (!map) {
-      console.error('[FireMap] No hay mapa')
-      return
-    }
-    if (!readyRef.current) {
-      console.warn('[FireMap] Mapa no listo aún')
-      return
-    }
-    if (active.length === 0 && cooled.length === 0) {
-      console.warn('[FireMap] Sin datos de focos')
-      return
-    }
-
-    console.log('[FireMap] Creando ' + (active.length + cooled.length) + ' marcadores de focos')
+  // NOTA: Los marcadores se crean en el evento 'load' del mapa
+  // Este useEffect solo limpia marcadores cuando los datos cambian
 
     fireMarkersRef.current.forEach(m => m.remove())
     fireMarkersRef.current = []
