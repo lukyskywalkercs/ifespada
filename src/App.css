@@ -432,10 +432,8 @@
   max-width: min(420px, calc(100% - 32px));
   margin: 0;
   padding: 5px 10px;
-  border-radius: 999px;
-  background: rgba(255, 252, 248, 0.72);
-  border: 1px solid var(--stroke);
-  backdrop-filter: blur(12px);
+  background: transparent;
+  border: none;
   font-size: 9px;
   font-weight: 500;
   color: var(--ink-faint);
@@ -625,8 +623,8 @@
     max-width: none;
     margin: 8px 16px 0;
     justify-content: center;
-    border-radius: 12px;
-    background: var(--paper-elevated);
+    background: transparent;
+    border: none;
   }
 
   @keyframes rise {
