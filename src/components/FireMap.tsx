@@ -180,88 +180,57 @@ export function FireMap({
         data: toPoints(cooled.length > 0 ? cooled : [], 'cooled'),
       })
 
-      // Capa base: cooled-glow (la más abajo de los focos)
-      // Sin beforeId = se añade al final (encima de 'carto')
+      // Capa base: cooled-glow - ESTILO SIMPLIFICADO PARA PROD
       map.addLayer({
         id: 'cooled-glow',
         type: 'circle',
         source: 'cooled',
         paint: {
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 4, 13, 10],
+          'circle-radius': 10,
           'circle-color': '#78716c',
-          'circle-opacity': 0.2,
-          'circle-blur': 0.6,
+          'circle-opacity': 0.5,
+          'circle-blur': 0,
         },
       })
 
-      // active-halo por encima de cooled-glow
+      // active-halo - ESTILO SIMPLE SIN EXPRESIONES
       map.addLayer({
         id: 'active-halo',
         type: 'circle',
         source: 'active',
         paint: {
-          'circle-radius': [
-            'interpolate',
-            ['linear'],
-            ['coalesce', ['get', 'frp'], 1],
-            0,
-            7,
-            50,
-            12,
-            200,
-            18,
-          ],
+          'circle-radius': 12,
           'circle-color': '#e4572e',
-          'circle-opacity': 0.16,
-          'circle-blur': 0.55,
+          'circle-opacity': 0.3,
+          'circle-blur': 2,
         },
       })
 
-      // cooled-core por encima de active-halo
+      // cooled-core - ESTILO SIMPLE
       map.addLayer({
         id: 'cooled-core',
         type: 'circle',
         source: 'cooled',
         paint: {
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 2.2, 13, 5],
+          'circle-radius': 5,
           'circle-color': '#57534e',
-          'circle-stroke-color': '#fffaf5',
+          'circle-stroke-color': '#fff',
           'circle-stroke-width': 1,
-          'circle-opacity': 0.85,
+          'circle-opacity': 1,
         },
       })
 
-      // active-core la más arriba (visible)
+      // active-core - ESTILO SIMPLE
       map.addLayer({
         id: 'active-core',
         type: 'circle',
         source: 'active',
         paint: {
-          'circle-radius': [
-            'interpolate',
-            ['linear'],
-            ['coalesce', ['get', 'frp'], 1],
-            0,
-            3,
-            50,
-            5.5,
-            200,
-            8,
-          ],
-          'circle-color': [
-            'interpolate',
-            ['linear'],
-            ['coalesce', ['get', 'frp'], 1],
-            0,
-            '#f4a261',
-            40,
-            '#e4572e',
-            120,
-            '#c2410c',
-          ],
-          'circle-stroke-color': '#fff7ed',
-          'circle-stroke-width': 1.1,
-          'circle-opacity': 0.92,
+          'circle-radius': 6,
+          'circle-color': '#e4572e',
+          'circle-stroke-color': '#fff',
+          'circle-stroke-width': 1,
+          'circle-opacity': 1,
         },
       })
 
