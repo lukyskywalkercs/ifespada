@@ -136,7 +136,9 @@ export async function fetchLiveSnapshot(): Promise<{
   const cooledSeen = new Set<string>()
   const cooled: Detection[] = []
   for (const d of weekRows) {
-    if (d.acq_date < '2026-07-25') continue
+    // Eliminamos el filtro estricto de año para que coja los fuegos
+    // if (d.acq_date < '2026-07-25') continue
+    
     const k = `${d.lat.toFixed(3)}|${d.lon.toFixed(3)}`
     if (activeKeys.has(k) || cooledSeen.has(k)) continue
     cooledSeen.add(k)
