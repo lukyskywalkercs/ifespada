@@ -388,6 +388,23 @@ export function FireMap({
     map.on('error', (e) => {
       console.error('❌ [FireMap] ERROR del mapa:', e.error)
     })
+    
+    // Log de carga de tiles
+    let tileCount = 0
+    map.on('data', (e) => {
+      if (e.dataType === 'source' && e.sourceId === 'carto') {
+        tileCount++
+        if (tileCount <= 3) {
+          console.log(`[FireMap] Tile cargado #${tileCount}`, e.isSourceLoaded ? 'SOURCE LOADED' : '')
+        }
+      }
+    })
+    
+    map.on('sourcedata', (e) => {
+      if (e.sourceId === 'carto' && e.isSourceLoaded) {
+        console.log('✅ [FireMap] Mapa base CARTO completamente cargado')
+      }
+    })
 
     mapRef.current = map
     return () => {
