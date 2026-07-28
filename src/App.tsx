@@ -95,25 +95,20 @@ export default function App() {
         setData(json)
 
         // Intentar cargar datos en vivo desde NASA FIRMS
-        // Si falla (CORS en producción), mostrar mapa vacío - NO usar datos cacheados
+        // Si falla (CORS en producción), usar datos precargados del fire.json
         try {
           setRefreshing(true)
           const snap = await applyLive(json)
           setLatestPass(snap.latestPass)
         } catch (liveErr) {
           setLiveOk(false)
-          // NO usamos datos del fire.json - mostramos arrays vacíos
-          console.warn('[App.tsx] No se pudieron obtener datos FIRMS en vivo. Mapa vacío.')
+          // Usar datos del fire.json como fallback
+          console.log('[App.tsx] Usando datos FIRMS precargados de fire.json')
           setData({
             ...json,
-            active: [],
-            cooled: [],
+            active: json.active,
+            cooled: json.cooled,
           })
-          setError(
-            liveErr instanceof Error
-              ? `FIRMS no disponible (${liveErr.message}).`
-              : 'FIRMS no disponible.',
-          )
         } finally {
           if (!cancelled) setRefreshing(false)
         }
