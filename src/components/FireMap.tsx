@@ -305,12 +305,19 @@ export function FireMap({
       if (cooledSource) cooledSource.setData(toPoints(cooled, 'cooled'))
       console.log('[FireMap] Mapa listo - fuentes inicializadas con', { active: active.length, cooled: cooled.length })
       
-      // Asegurar que todas las capas son visibles
-      const layerIds = ['cooled-glow', 'cooled-core', 'active-halo', 'active-core']
-      layerIds.forEach(id => {
-        if (map.getLayer(id)) {
-          map.setLayoutProperty(id, 'visibility', 'visible')
-          console.log('[FireMap] Capa', id, 'visibilidad:', map.getLayoutProperty(id, 'visibility'))
+      // Asegurar que todas las capas son visibles y en el orden correcto
+      const layerIds = ['cooled-glow', 'active-halo', 'cooled-core', 'active-core']
+      console.log('[FireMap] Orden de capas en el mapa:', map.getStyle().layers?.map(l => l.id))
+      
+      layerIds.forEach((id, index) => {
+        const layer = map.getLayer(id)
+        if (layer) {
+          const visibility = map.getLayoutProperty(id, 'visibility')
+          console.log(`[FireMap] Capa ${id}: existe=${!!layer}, visibilidad=${visibility}`)
+          if (visibility !== 'visible') {
+            map.setLayoutProperty(id, 'visibility', 'visible')
+            console.log(`[FireMap] Capa ${id} forzada a visible`)
+          }
         } else {
           console.error('[FireMap] Capa', id, 'NO existe')
         }
