@@ -320,6 +320,17 @@ export function FireMap({
         firstFeature: cooledGeoJSON.features[0]
       }))
       
+      // PRUEBA: Añadir punto hardcoded para verificar si MapLibre renderiza
+      const testPoint = {
+        type: 'FeatureCollection' as const,
+        features: [{
+          type: 'Feature' as const,
+          id: 'test',
+          properties: { kind: 'test' },
+          geometry: { type: 'Point' as const, coordinates: [-0.28, 39.88] } // Centro del mapa
+        }]
+      }
+      
       if (activeSource) {
         activeSource.setData(activeGeoJSON)
         console.log('[FireMap] Fuente active actualizada con', active.length, 'puntos')
@@ -327,6 +338,23 @@ export function FireMap({
       if (cooledSource) {
         cooledSource.setData(cooledGeoJSON)
         console.log('[FireMap] Fuente cooled actualizada con', cooled.length, 'puntos')
+      }
+      
+      // AÑADIR capa de prueba temporal
+      if (!map.getLayer('test-point')) {
+        map.addSource('test-source', { type: 'geojson', data: testPoint })
+        map.addLayer({
+          id: 'test-point',
+          type: 'circle',
+          source: 'test-source',
+          paint: {
+            'circle-radius': 15,
+            'circle-color': '#00ff00',
+            'circle-stroke-color': '#fff',
+            'circle-stroke-width': 2
+          }
+        })
+        console.log('[FireMap] Capa de prueba AÑADIDA - deberías ver un punto verde brillante en el centro')
       }
       
       // Forzar repaint inmediato
