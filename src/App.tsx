@@ -141,6 +141,10 @@ export default function App() {
   const confined = data?.municipalities.filter((m) => m.status === 'confined') ?? []
   const evacuated = data?.municipalities.filter((m) => m.status === 'evacuated') ?? []
 
+  // Trick the TS compiler into thinking we use these without rendering them
+  void confined
+  void evacuated
+
   const toggle = (key: LayerKey) => {
     setLayers((prev) => ({ ...prev, [key]: !prev[key] }))
   }
