@@ -364,14 +364,21 @@ export function FireMap({
       map.triggerRepaint()
       console.log('[FireMap] triggerRepaint llamado')
       
-      // Verificar que las capas existen y son visibles
+      // Verificar que TODAS las capas existen y son visibles
       const allLayers = map.getStyle().layers?.map(l => l.id) || []
       console.log('[FireMap] Todas las capas:', allLayers)
       
-      const layerIds: string[] = ['cooled-glow', 'active-halo', 'cooled-core', 'active-core']
+      const layerIds: string[] = ['cooled-glow', 'active-halo', 'cooled-core', 'active-core', 'test-point']
       layerIds.forEach((id: string) => {
-        if (map.getLayer(id)) {
+        const layerExists = map.getLayer(id)
+        if (layerExists) {
+          const currentVis = map.getLayoutProperty(id, 'visibility')
+          console.log(`[FireMap] Capa ${id} visibilidad actual: ${currentVis}`)
           map.setLayoutProperty(id, 'visibility', 'visible')
+          const newVis = map.getLayoutProperty(id, 'visibility')
+          console.log(`[FireMap] Capa ${id} nueva visibilidad: ${newVis}`)
+        } else {
+          console.error(`[FireMap] Capa ${id} NO existe`)  
         }
       })
       
