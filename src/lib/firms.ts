@@ -103,9 +103,16 @@ function dedupe(detections: Detection[]): Detection[] {
 
 async function fetchFeed(path: string, id: string, kind: 'viirs' | 'modis') {
   const res = await fetch(`${path}${path.includes('?') ? '&' : '?'}t=${Date.now()}`)
-  if (!res.ok) throw new Error(`${id}: ${res.status}`)
+  if (!res.ok) throw new Error(`${id}: HTTP ${res.status}`)
+  
   const text = await res.text()
-  if (text.trim().startsWith('{')) throw new Error(`${id}: respuesta no CSV`)
+  const trimmed = text.trim()
+  
+  // Si la respuesta es JSON, HTML, o no contiene las cabeceras típicas de un CSV de la NASA
+  if (trimmed.startsWith('{') || trimmed.startsWith('<') || !trimmed.toLowerCase().includes('latitude,longitude')) {
+    throw new Error(`${id}: formato de respuesta incorrecto (no es CSV válido)`)
+  }
+  
   return parseCsv(text)
     .map((row) => rowToDetection(row, kind, id))
     .filter((d): d is Detection => Boolean(d))
