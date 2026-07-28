@@ -297,6 +297,14 @@ export function FireMap({
 
       syncTownMarkers(map, municipalities)
       readyRef.current = true
+      
+      // Forzar actualización inicial de datos ahora que el mapa está listo
+      const activeSource = map.getSource('active') as GeoJSONSource | undefined
+      const cooledSource = map.getSource('cooled') as GeoJSONSource | undefined
+      if (activeSource) activeSource.setData(toPoints(active, 'active'))
+      if (cooledSource) cooledSource.setData(toPoints(cooled, 'cooled'))
+      console.log('[FireMap] Mapa listo - fuentes inicializadas con', { active: active.length, cooled: cooled.length })
+      
       onReadyRef.current()
     })
 
