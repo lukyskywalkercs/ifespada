@@ -88,18 +88,17 @@ export default function App() {
         
         setData(json)
 
+        // Intentar cargar datos en vivo (solo funciona en desarrollo local con proxy)
+        let liveDataOk = false
         try {
           setRefreshing(true)
           const snap = await applyLive(json)
           setLatestPass(snap.latestPass)
+          liveDataOk = true
         } catch (liveErr) {
           setLiveOk(false)
-          setError(
-            liveErr instanceof Error
-              ? `FIRMS en vivo no disponible (${liveErr.message}). API de NASA inalcanzable.`
-              : 'FIRMS en vivo no disponible. API de NASA inalcanzable.',
-          )
-          
+          // En producción (Netlify), usar datos del fire.json sin mostrar error
+          console.log('[App.tsx] Usando datos FIRMS precargados de fire.json')
           setData({
             ...json,
             active: json.active,
@@ -108,6 +107,9 @@ export default function App() {
         } finally {
           if (!cancelled) setRefreshing(false)
         }
+        
+        // Si no hay error y liveDataOk es true, ya se cargaron los datos en applyLive
+        // Si hubo error, ya se cargaron los datos del fire.json arriba
       } catch (err) {
         if (!cancelled) {
           setError(err instanceof Error ? err.message : 'Error de carga')

@@ -157,6 +157,7 @@ export function FireMap({
     ro.observe(containerRef.current)
 
     map.on('load', () => {
+      // Añadimos fuentes primero
       map.addSource('active', {
         type: 'geojson',
         data: toPoints(active, 'active'),
@@ -166,6 +167,7 @@ export function FireMap({
         data: toPoints(cooled, 'cooled'),
       })
 
+      // Capa base: cooled-glow (la más abajo)
       map.addLayer({
         id: 'cooled-glow',
         type: 'circle',
@@ -178,19 +180,7 @@ export function FireMap({
         },
       })
 
-      map.addLayer({
-        id: 'cooled-core',
-        type: 'circle',
-        source: 'cooled',
-        paint: {
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 2.2, 13, 5],
-          'circle-color': '#57534e',
-          'circle-stroke-color': '#fffaf5',
-          'circle-stroke-width': 1,
-          'circle-opacity': 0.85,
-        },
-      })
-
+      // active-halo por encima de cooled-glow
       map.addLayer({
         id: 'active-halo',
         type: 'circle',
@@ -213,6 +203,21 @@ export function FireMap({
         },
       })
 
+      // cooled-core por encima de active-halo
+      map.addLayer({
+        id: 'cooled-core',
+        type: 'circle',
+        source: 'cooled',
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 2.2, 13, 5],
+          'circle-color': '#57534e',
+          'circle-stroke-color': '#fffaf5',
+          'circle-stroke-width': 1,
+          'circle-opacity': 0.85,
+        },
+      })
+
+      // active-core la más arriba (visible)
       map.addLayer({
         id: 'active-core',
         type: 'circle',
