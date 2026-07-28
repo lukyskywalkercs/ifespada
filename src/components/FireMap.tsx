@@ -165,17 +165,20 @@ export function FireMap({
     ro.observe(containerRef.current)
 
     map.on('load', () => {
-      // Añadimos fuentes primero
+      console.log('[FireMap] Evento load - datos iniciales:', { active: active.length, cooled: cooled.length })
+      
+      // Añadimos fuentes con datos vacíos si aún no hay datos
       map.addSource('active', {
         type: 'geojson',
-        data: toPoints(active, 'active'),
+        data: toPoints(active.length > 0 ? active : [], 'active'),
       })
       map.addSource('cooled', {
         type: 'geojson',
-        data: toPoints(cooled, 'cooled'),
+        data: toPoints(cooled.length > 0 ? cooled : [], 'cooled'),
       })
 
-      // Capa base: cooled-glow (la más abajo)
+      // Capa base: cooled-glow (la más abajo de los focos)
+      // Sin beforeId = se añade al final (encima de 'carto')
       map.addLayer({
         id: 'cooled-glow',
         type: 'circle',
