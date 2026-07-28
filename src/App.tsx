@@ -83,21 +83,28 @@ export default function App() {
     ;(async () => {
       try {
         const res = await fetch('/data/fire.json')
-        if (!res.ok) throw new Error('No se pudo cargar el dataset local')
+        if (!res.ok) throw new Error('No se pudo cargar el dataset base de municipios')
         const json = (await res.json()) as FirePayload
         if (cancelled) return
-        setData(json)
-        setLatestPass(latestAcquisition([...json.active, ...json.cooled]))
+        
         try {
           setRefreshing(true)
-          await applyLive(json)
+          // Solo si Live falla la app se queda vacía, quitando los focos locales
+          const snap = await applyLive(json)
+          setLatestPass(snap.latestPass)
         } catch (liveErr) {
           setLiveOk(false)
           setError(
             liveErr instanceof Error
-              ? `FIRMS en vivo no disponible (${liveErr.message}). Mostrando última copia local.`
-              : 'FIRMS en vivo no disponible',
+              ? `FIRMS en vivo no disponible (${liveErr.message}). API de NASA inalcanzable.`
+              : 'FIRMS en vivo no disponible. API de NASA inalcanzable.',
           )
+          // Forzamos que el mapa no muestre datos locales de incendios si la API falla
+          setData({
+            ...json,
+            active: [],
+            cooled: [],
+          })
         } finally {
           if (!cancelled) setRefreshing(false)
         }
