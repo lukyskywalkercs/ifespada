@@ -381,16 +381,6 @@ export function FireMap({
     map.on('error', (e) => {
       console.error('❌ [FireMap] ERROR del mapa:', e.error)
     })
-    
-    map.on('style.loaderror', (e) => {
-      console.error('❌ [FireMap] Error cargando el estilo del mapa:', e)
-    })
-    
-    map.on('data', (e) => {
-      if (e.dataType === 'style') {
-        console.log('[FireMap] Datos del estilo cargados:', e)
-      }
-    })
 
     mapRef.current = map
     return () => {
