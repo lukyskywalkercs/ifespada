@@ -425,34 +425,44 @@
   bottom: 16px;
   z-index: 2;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
   align-items: center;
-  gap: 4px 8px;
-  max-width: min(420px, calc(100% - 32px));
+  gap: 8px;
   margin: 0;
-  padding: 5px 10px;
-  background: transparent;
-  border: none;
-  font-size: 9px;
-  font-weight: 500;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+  border: 1px solid rgba(28, 25, 23, 0.06);
+  font-size: 10px;
+  font-weight: 400;
   color: var(--ink-faint);
   pointer-events: auto;
+  transition: all 0.2s var(--ease-out);
 }
 
-.site-credit span {
+.site-credit:hover {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(28, 25, 23, 0.1);
+}
+
+.site-credit .credit-sep {
   color: var(--ink-faint);
-  opacity: 0.7;
+  opacity: 0.4;
+  user-select: none;
 }
 
-.site-credit a {
+.site-credit .credit-link {
   color: var(--ink-soft);
   text-decoration: none;
+  font-weight: 500;
   transition: color 0.2s var(--ease-out);
+  padding: 2px 6px;
+  border-radius: 6px;
 }
 
-.site-credit a:hover {
-  color: var(--ink);
+.site-credit .credit-link:hover {
+  color: var(--ember);
+  background: rgba(228, 87, 46, 0.06);
 }
 
 .town-marker {

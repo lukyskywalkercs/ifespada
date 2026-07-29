@@ -1,6 +1,7 @@
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { scrape } from './scrape-municipios.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
@@ -145,22 +146,78 @@ async function main() {
     cooled.push(d)
   }
 
-  let municipios = []
-  const munPath = join(root, 'municipios.json')
-  if (existsSync(munPath)) {
-    municipios = JSON.parse(readFileSync(munPath, 'utf8')).map((m) => ({
-      name: m.name.replace(/^La Vall d.*/, "La Vall d'Uixó"),
-      status: m.status,
-      lat: m.lat,
-      lon: m.lon,
-    }))
+  // Intentar scraping de noticias (puede fallar por CORS/bloqueos)
+  let newsData = { municipiosConfinados: [], municipiosEvacuados: [], fuentes: [] }
+  try {
+    newsData = await scrape()
+  } catch (err) {
+    console.warn('⚠️  Scraping falló, usando datos estáticos:', err.message)
   }
+  
+  // Construir lista de municipios con estado
+  const municipiosConStatus = []
+  const seenMuns = new Set()
+  
+  // Si el scraping encontró municipios, usarlos (son más actuales)
+  if (newsData.municipiosConfinados.length > 0 || newsData.municipiosEvacuados.length > 0) {
+    console.log('✅ Usando municipios del scraping')
+    newsData.municipiosConfinados.forEach(name => {
+      if (!seenMuns.has(name)) {
+        municipiosConStatus.push({ name, status: 'confined', lat: 39.88, lon: -0.28 })
+        seenMuns.add(name)
+      }
+    })
+    newsData.municipiosEvacuados.forEach(name => {
+      if (!seenMuns.has(name)) {
+        municipiosConStatus.push({ name, status: 'evacuated', lat: 39.88, lon: -0.28 })
+        seenMuns.add(name)
+      }
+    })
+  }
+  
+  // Fallback: usar municipios.json estático
+  if (municipiosConStatus.length === 0) {
+    console.log('ℹ️  Usando datos estáticos de municipios.json')
+    const munPath = join(root, 'municipios.json')
+    if (existsSync(munPath)) {
+      const staticMuns = JSON.parse(readFileSync(munPath, 'utf8'))
+      staticMuns.forEach((m) => {
+        if (!seenMuns.has(m.name)) {
+          municipiosConStatus.push({
+            name: m.name.replace(/^La Vall d.*/, "La Vall d'Uixó"),
+            status: m.status,
+            lat: m.lat,
+            lon: m.lon,
+          })
+          seenMuns.add(m.name)
+        }
+      })
+    }
+  }
+  
+  const municipios = municipiosConStatus
 
+  // Calcular personas afectadas (estimación por municipio)
+  const poblacionPorMunicipio = {
+    "La Vall d'Uixó": 31000, 'Almassora': 27000, 'Almenara': 7000,
+    'Vila-real': 52000, 'Burriana': 35000, 'Nules': 14000,
+  }
+  
+  const confinedPeople = municipios
+    .filter(m => m.status === 'confined')
+    .reduce((sum, m) => sum + (poblacionPorMunicipio[m.name] || 2000), 0)
+  
+  const evacuatedPeople = municipios
+    .filter(m => m.status === 'evacuated')
+    .reduce((sum, m) => sum + (poblacionPorMunicipio[m.name] || 2000), 0)
+  
   const payload = {
     generatedAt: new Date().toISOString(),
     sources: {
       firms: 'NASA FIRMS (VIIRS NOAA-20/21, Suomi-NPP + MODIS C6.1)',
-      municipalities: 'Cecopi / Generalitat Valenciana (datos estáticos)',
+      municipalities: newsData.fuentes.length > 0 
+        ? `Cecopi / Generalitat Valenciana vía scraping RSS (${newsData.fuentes.map(f => f.medio).join(', ')})`
+        : 'Cecopi / Generalitat Valenciana (datos estáticos)',
       geocoding: 'OpenStreetMap Nominatim',
     },
     incident: {
@@ -169,8 +226,8 @@ async function main() {
       hectares: 8500,
       perimeterKm: 72,
       status: 'Activo — ni estabilizado ni controlado',
-      confinedPeople: 64000,
-      evacuatedPeople: 16000,
+      confinedPeople: confinedPeople || 64000,
+      evacuatedPeople: evacuatedPeople || 16000,
       aerialMeans: 30,
       groundCrew: 450,
     },
@@ -178,6 +235,7 @@ async function main() {
     active,
     cooled,
     municipalities: municipios,
+    newsSources: newsData.fuentes.slice(0, 5), // Últimas 5 fuentes
   }
 
   writeFileSync(join(outDir, 'fire.json'), JSON.stringify(payload))

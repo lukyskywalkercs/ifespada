@@ -212,23 +212,11 @@ export default function App() {
             </div>
 
             <footer className="site-credit">
-              <span>Lind Informática</span>
-              <span aria-hidden>·</span>
-              <a href="mailto:lucas@lindinformatica.com">lucas@lindinformatica.com</a>
-              <span aria-hidden>·</span>
-              <a href="https://www.lindinformatica.co" target="_blank" rel="noreferrer">
-                lindinformatica.co
+              <span>Desarrollado por Lind Informática</span>
+              <span className="credit-sep">•</span>
+              <a href="https://www.lindinformatica.co" target="_blank" rel="noreferrer" className="credit-link">
+                Contacto
               </a>
-              <span aria-hidden>·</span>
-              <a
-                href="https://www.linkedin.com/in/lucas-chabrera-querol/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                LinkedIn
-              </a>
-              <span aria-hidden>·</span>
-              <a href="tel:+34689388980">689 388 980</a>
             </footer>
           </section>
 
