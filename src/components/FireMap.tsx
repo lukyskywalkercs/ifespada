@@ -65,24 +65,24 @@ export function FireMap({
     if (active.length === 0 && cooled.length === 0) return
 
     fireMarkersRef.current.forEach(m => m.remove())
-    fireMarkersRef.current = []
-
+    fireMarkersRef.current = []urrent,
+      style: {
     active.forEach(d => {
       const el = createFireMarkerElement('active', d.frp ?? undefined)
       el.addEventListener('click', (e) => {
         e.stopPropagation()
         popupRef.current
-          ?.setLngLat([d.lon, d.lat])
+          ?.setLngLat([d.lon, d.lat])tocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
           .setHTML('<div class="popup"><h3>Foco activo</h3><p>' + formatAcq(d.acq_date, d.acq_time) + '</p></div>')
-          .addTo(map)
-      })
+          .addTo(map)//c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
+      })    ],
       const marker = new Marker({ element: el, anchor: 'center' })
-        .setLngLat([d.lon, d.lat])
+        .setLngLat([d.lon, d.lat])etMap CARTO',
         .addTo(map)
       fireMarkersRef.current.push(marker)
-    })
-
-    cooled.forEach(d => {
+    })  layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
+      },
+    cooled.forEach(d => {88],
       const el = createFireMarkerElement('cooled')
       el.addEventListener('click', (e) => {
         e.stopPropagation()
@@ -91,113 +91,140 @@ export function FireMap({
           .setHTML('<div class="popup"><h3>Sin deteccion reciente</h3><p>' + formatAcq(d.acq_date, d.acq_time) + '</p></div>')
           .addTo(map)
       })
-      const marker = new Marker({ element: el, anchor: 'center' })
+      const marker = new Marker({ element: el, anchor: 'center' })'bottom-right')
         .setLngLat([d.lon, d.lat])
-        .addTo(map)
+        .addTo(map)t = new MapLibrePopup({
       fireMarkersRef.current.push(marker)
-    })
+    })closeOnClick: true,
   }, [active, cooled])
-
-  // Efecto para municipios - usa isStyleLoaded para evitar timing issues
+      maxWidth: '280px',
+  // Actualizar visibilidad de municipios cuando cambien los layers
   useEffect(() => {
-    const map = mapRef.current
-    if (!map) return
-
-    const renderTowns = () => {
-      townMarkersRef.current.forEach(m => m.remove())
-      townMarkersRef.current = []
-
-      municipalities.forEach(town => {
-        const visible =
-          (town.status === 'confined' && layers.confined) ||
-          (town.status === 'evacuated' && layers.evacuated)
-        if (!visible) return
-
-        const el = makeTownEl(town)
-        el.addEventListener('click', (ev) => {
-          ev.stopPropagation()
-          const title = town.status === 'confined' ? 'Municipio confinado' : 'Nucleo evacuado'
-          popupRef.current
-            ?.setLngLat([town.lon, town.lat])
-            .setHTML('<div class="popup"><h3>' + town.name + '</h3><p>' + title + '</p></div>')
-            .addTo(map)
-        })
-
-        const marker = new Marker({ element: el, anchor: 'bottom' })
-          .setLngLat([town.lon, town.lat])
+    const map = mapRef.currenterver(() => map.resize())
+    if (!map || !readyRef.current) returnainerRef.current)
+    
+    // Re-renderizar municipios con nuevos filtros    map.on('load', () => {
+    townMarkersRef.current.forEach(m => m.remove())
+    townMarkersRef.current = []
+    
+    municipalities.forEach(town => {
+      const visible =, (e) => console.error('Map error:', e.error))
+        (town.status === 'confined' && layers.confined) ||
+        (town.status === 'evacuated' && layers.evacuated)
+      if (!visible) return
+      
+      const el = makeTownEl(town)
+      el.addEventListener('click', (ev) => {
+        ev.stopPropagation().current?.remove()
+        const title = town.status === 'confined' ? 'Municipio confinado' : 'Nucleo evacuado'
+        popupRef.current
+          ?.setLngLat([town.lon, town.lat])ef.current = false
+          .setHTML('<div class="popup"><h3>' + town.name + '</h3><p>' + title + '</p></div>')
           .addTo(map)
-        townMarkersRef.current.push(marker)
       })
-    }
+      ef} className="map-canvas" />
+      const marker = new Marker({ element: el, anchor: 'bottom' })
+        .setLngLat([town.lon, town.lat])
+        .addTo(map)eMap load] Mapa cargado, creando marcadores...')
+      townMarkersRef.current.push(marker)
+    }) Crear marcadores de focos
+  }, [layers.confined, layers.evacuated]) > 0) {
+  fireMarkersRef.current.forEach(m => m.remove())
+  // NOTA: Municipios se crean en el evento load junto con los focos        fireMarkersRef.current = []
 
-    if (map.isStyleLoaded()) {
-      renderTowns()
-    } else {
-      map.once('load', renderTowns)
-    }
-  }, [municipalities, layers.confined, layers.evacuated])
-
-  // Inicialización del mapa
-  useEffect(() => {
-    if (!containerRef.current || mapRef.current) return
-
-    const map = new MapLibreMap({
-      container: containerRef.current,
-      style: {
-        version: 8,
+  // Inicialización del mapa    active.forEach(d => {
+  useEffect(() => {nt('active', d.frp ?? undefined)
+    if (!containerRef.current || mapRef.current) returnener('click', (e) => {
+tion()
+    const map = new MapLibreMap({Ref.current
+      container: containerRef.current,t([d.lon, d.lat])
+      style: {        .setHTML('<div class="popup"><h3>Foco activo</h3><p>' + formatAcq(d.acq_date, d.acq_time) + '</p></div>')
+        version: 8,              .addTo(map)
         sources: {
-          carto: {
-            type: 'raster',
+          carto: {{ element: el, anchor: 'center' })
+            type: 'raster',            .setLngLat([d.lon, d.lat])
             tiles: [
-              'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
+              'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',ent.push(marker)
               'https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-              'https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-            ],
+              'https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',  
+            ],        cooled.forEach(d => {
             tileSize: 256,
-            attribution: 'OpenStreetMap CARTO',
-          },
-        },
-        layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
-      },
+            attribution: 'OpenStreetMap CARTO',          el.addEventListener('click', (e) => {
+          },ation()
+        },ef.current
+        layers: [{ id: 'carto', type: 'raster', source: 'carto' }],gLat([d.lon, d.lat])
+      },teccion reciente</h3><p>' + formatAcq(d.acq_date, d.acq_time) + '</p></div>')
       center: [-0.28, 39.88],
       zoom: 10.45,
-      maxBounds: [
-        [-0.85, 39.45],
+      maxBounds: [rker = new Marker({ element: el, anchor: 'center' })
+        [-0.85, 39.45],on, d.lat])
         [0.25, 40.35],
-      ],
+      ],     fireMarkersRef.current.push(marker)
       attributionControl: { compact: true },
-    })
+    })        
+rent.length + ' focos creados')
+    map.addControl(new NavigationControl({ showCompass: false }), 'bottom-right')     }
+          
 
-    map.addControl(new NavigationControl({ showCompass: false }), 'bottom-right')
-    
-    popupRef.current = new MapLibrePopup({
-      closeButton: false,
-      closeOnClick: true,
-      offset: 18,
-      maxWidth: '280px',
-    })
 
-    const ro = new ResizeObserver(() => map.resize())
-    ro.observe(containerRef.current)
 
-    map.on('load', () => {
-      readyRef.current = true
-      onReady()
-    })
 
-    map.on('error', (e) => console.error('Map error:', e.error))
 
-    mapRef.current = map
-    return () => {
-      ro.disconnect()
-      fireMarkersRef.current.forEach(m => m.remove())
-      townMarkersRef.current.forEach(m => m.remove())
-      popupRef.current?.remove()
-      map.remove()
-      mapRef.current = null
-      readyRef.current = false
-    }
-  }, [onReady])
 
-  return <div ref={containerRef} className="map-canvas" />
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}  return <div ref={containerRef} className="map-canvas" />  }, [onReady])    }      readyRef.current = false      mapRef.current = null      map.remove()      popupRef.current?.remove()      townMarkersRef.current.forEach(m => m.remove())      fireMarkersRef.current.forEach(m => m.remove())      ro.disconnect()    return () => {    mapRef.current = map    map.on('error', (e) => console.error('Map error:', e.error))    })      onReady()      readyRef.current = true    map.on('load', () => {    ro.observe(containerRef.current)    const ro = new ResizeObserver(() => map.resize())    })      maxWidth: '280px',      offset: 18,      closeOnClick: true,      closeButton: false,    popupRef.current = new MapLibrePopup({      // Crear marcadores de municipios AQUÍ MISMO
+      if (municipalities.length > 0) {
+        townMarkersRef.current.forEach(m => m.remove())
+        townMarkersRef.current = []
+        
+        municipalities.forEach(town => {
+          const visible =
+            (town.status === 'confined' && layers.confined) ||
+            (town.status === 'evacuated' && layers.evacuated)
+          if (!visible) return
+          
+          const el = makeTownEl(town)
+          el.addEventListener('click', (ev) => {
+            ev.stopPropagation()
+            const title = town.status === 'confined' ? 'Municipio confinado' : 'Nucleo evacuado'
+            popupRef.current
+              ?.setLngLat([town.lon, town.lat])
+              .setHTML('<div class="popup"><h3>' + town.name + '</h3><p>' + title + '</p></div>')
+              .addTo(map)
+          })
+          
+          const marker = new Marker({ element: el, anchor: 'bottom' })
+            .setLngLat([town.lon, town.lat])
+            .addTo(map)
+          townMarkersRef.current.push(marker)
+        })
+        
+        console.log('[FireMap load] ' + townMarkersRef.current.length + ' municipios creados')
+      }
+      
+      
