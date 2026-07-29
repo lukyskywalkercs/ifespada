@@ -1,6 +1,7 @@
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { scrape } from './scrape-news.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
@@ -145,23 +146,67 @@ async function main() {
     cooled.push(d)
   }
 
-  let municipios = []
-  const munPath = join(root, 'municipios.json')
-  if (existsSync(munPath)) {
-    municipios = JSON.parse(readFileSync(munPath, 'utf8')).map((m) => ({
-      name: m.name.replace(/^La Vall d.*/, "La Vall d'Uixó"),
-      status: m.status,
-      lat: m.lat,
-      lon: m.lon,
-    }))
+  // Scraping de noticias para obtener municipios confinados/evacuados
+  const newsData = await scrape()
+  
+  // Construir lista de municipios con estado
+  const municipiosConStatus = []
+  const seenMuns = new Set()
+  
+  // Primero añadir los del scraping (prioridad)
+  for (const munName of newsData.municipiosConfinados) {
+    if (!seenMuns.has(munName)) {
+      municipiosConStatus.push({
+        name: munName,
+        status: 'confined',
+        lat: 39.88, // Coordenadas aproximadas, se mejorarán con geocoding
+        lon: -0.28,
+      })
+      seenMuns.add(munName)
+    }
   }
+  
+  for (const munName of newsData.municipiosEvacuados) {
+    if (!seenMuns.has(munName)) {
+      municipiosConStatus.push({
+        name: munName,
+        status: 'evacuated',
+        lat: 39.88,
+        lon: -0.28,
+      })
+      seenMuns.add(munName)
+    }
+  }
+  
+  // Si no hay datos del scraping, usar fallback estático
+  if (municipiosConStatus.length === 0) {
+    console.log('⚠️  No se encontraron municipios en noticias, usando fallback estático')
+    const munPath = join(root, 'municipios.json')
+    if (existsSync(munPath)) {
+      const staticMuns = JSON.parse(readFileSync(munPath, 'utf8'))
+      staticMuns.forEach((m) => {
+        if (!seenMuns.has(m.name)) {
+          municipiosConStatus.push({
+            name: m.name.replace(/^La Vall d.*/, "La Vall d'Uixó"),
+            status: m.status,
+            lat: m.lat,
+            lon: m.lon,
+          })
+          seenMuns.add(m.name)
+        }
+      })
+    }
+  }
+  
+  const municipios = municipiosConStatus
 
   const payload = {
     generatedAt: new Date().toISOString(),
     sources: {
       firms: 'NASA FIRMS (VIIRS NOAA-20/21, Suomi-NPP + MODIS C6.1)',
-      municipalities:
-        'Cecopi / Generalitat Valenciana vía cobertura periodística (La Vanguardia, Levante-EMV, El País, 27 jul 2026)',
+      municipalities: newsData.fuentes.length > 0 
+        ? `Cecopi / Generalitat Valenciana vía scraping RSS (${newsData.fuentes.map(f => f.medio).join(', ')})`
+        : 'Cecopi / Generalitat Valenciana (datos estáticos)',
       geocoding: 'OpenStreetMap Nominatim',
     },
     incident: {
@@ -170,15 +215,17 @@ async function main() {
       hectares: 8500,
       perimeterKm: 72,
       status: 'Activo — ni estabilizado ni controlado',
-      confinedPeople: 64000,
-      evacuatedPeople: 16000,
+      confinedPeople: newsData.personasConfinadas || 64000,
+      evacuatedPeople: newsData.personasEvacuadas || 16000,
       aerialMeans: 30,
       groundCrew: 450,
+      lastUpdate: new Date().toISOString(),
     },
     bbox: [WEST, SOUTH, EAST, NORTH],
     active,
     cooled,
     municipalities: municipios,
+    newsSources: newsData.fuentes,
   }
 
   writeFileSync(join(outDir, 'fire.json'), JSON.stringify(payload))

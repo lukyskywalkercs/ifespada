@@ -51,8 +51,6 @@ export function FireMap({
   layers,
   onReady,
 }: FireMapProps) {
-  console.log('[FireMap] Render con', { active: active.length, cooled: cooled.length, towns: municipalities.length })
-  
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapInstance | null>(null)
   const popupRef = useRef<Popup | null>(null)
@@ -60,8 +58,11 @@ export function FireMap({
   const fireMarkersRef = useRef<Marker[]>([])
   const readyRef = useRef(false)
 
-  // NOTA: Los marcadores se crean en el evento 'load' del mapa
-  // Este useEffect solo limpia marcadores cuando los datos cambian
+  // Efecto para marcadores de focos - se ejecuta cuando el mapa carga
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !readyRef.current) return
+    if (active.length === 0 && cooled.length === 0) return
 
     fireMarkersRef.current.forEach(m => m.remove())
     fireMarkersRef.current = []
@@ -95,10 +96,9 @@ export function FireMap({
         .addTo(map)
       fireMarkersRef.current.push(marker)
     })
-    
-    console.log('[FireMap] ' + fireMarkersRef.current.length + ' marcadores creados')
   }, [active, cooled])
 
+  // Efecto para municipios - usa isStyleLoaded para evitar timing issues
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
@@ -130,15 +130,14 @@ export function FireMap({
       })
     }
 
-    // Si el mapa ya está listo, pintar inmediatamente
     if (map.isStyleLoaded()) {
       renderTowns()
     } else {
-      // Si no, esperar a que cargue
       map.once('load', renderTowns)
     }
   }, [municipalities, layers.confined, layers.evacuated])
 
+  // Inicialización del mapa
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
 
@@ -182,47 +181,7 @@ export function FireMap({
     ro.observe(containerRef.current)
 
     map.on('load', () => {
-      console.log('[FireMap load] Mapa cargado, creando marcadores con', active.length + cooled.length, 'focos')
       readyRef.current = true
-      
-      // Crear marcadores AQUÍ MISMO cuando el mapa está listo
-      if (active.length > 0 || cooled.length > 0) {
-        fireMarkersRef.current.forEach(m => m.remove())
-        fireMarkersRef.current = []
-        
-        active.forEach(d => {
-          const el = createFireMarkerElement('active', d.frp ?? undefined)
-          el.addEventListener('click', (e) => {
-            e.stopPropagation()
-            popupRef.current
-              ?.setLngLat([d.lon, d.lat])
-              .setHTML('<div class="popup"><h3>Foco activo</h3><p>' + formatAcq(d.acq_date, d.acq_time) + '</p></div>')
-              .addTo(map)
-          })
-          const marker = new Marker({ element: el, anchor: 'center' })
-            .setLngLat([d.lon, d.lat])
-            .addTo(map)
-          fireMarkersRef.current.push(marker)
-        })
-        
-        cooled.forEach(d => {
-          const el = createFireMarkerElement('cooled')
-          el.addEventListener('click', (e) => {
-            e.stopPropagation()
-            popupRef.current
-              ?.setLngLat([d.lon, d.lat])
-              .setHTML('<div class="popup"><h3>Sin deteccion reciente</h3><p>' + formatAcq(d.acq_date, d.acq_time) + '</p></div>')
-              .addTo(map)
-          })
-          const marker = new Marker({ element: el, anchor: 'center' })
-            .setLngLat([d.lon, d.lat])
-            .addTo(map)
-          fireMarkersRef.current.push(marker)
-        })
-        
-        console.log('[FireMap load] ' + fireMarkersRef.current.length + ' marcadores creados')
-      }
-      
       onReady()
     })
 
