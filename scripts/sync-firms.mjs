@@ -146,56 +146,37 @@ async function main() {
     cooled.push(d)
   }
 
-  // Intentar scraping de noticias (puede fallar por CORS/bloqueos)
-  let newsData = { municipiosConfinados: [], municipiosEvacuados: [], fuentes: [] }
-  try {
-    newsData = await scrape()
-  } catch (err) {
-    console.warn('⚠️  Scraping falló, usando datos estáticos:', err.message)
-  }
-  
-  // Construir lista de municipios con estado
-  const municipiosConStatus = []
-  const seenMuns = new Set()
-  
-  // Si el scraping encontró municipios, usarlos (son más actuales)
-  if (newsData.municipiosConfinados.length > 0 || newsData.municipiosEvacuados.length > 0) {
-    console.log('✅ Usando municipios del scraping')
-    newsData.municipiosConfinados.forEach(name => {
-      if (!seenMuns.has(name)) {
-        municipiosConStatus.push({ name, status: 'confined', lat: 39.88, lon: -0.28 })
-        seenMuns.add(name)
-      }
-    })
-    newsData.municipiosEvacuados.forEach(name => {
-      if (!seenMuns.has(name)) {
-        municipiosConStatus.push({ name, status: 'evacuated', lat: 39.88, lon: -0.28 })
-        seenMuns.add(name)
-      }
-    })
-  }
-  
-  // Fallback: usar municipios.json estático
-  if (municipiosConStatus.length === 0) {
-    console.log('ℹ️  Usando datos estáticos de municipios.json')
-    const munPath = join(root, 'municipios.json')
-    if (existsSync(munPath)) {
-      const staticMuns = JSON.parse(readFileSync(munPath, 'utf8'))
-      staticMuns.forEach((m) => {
-        if (!seenMuns.has(m.name)) {
-          municipiosConStatus.push({
-            name: m.name.replace(/^La Vall d.*/, "La Vall d'Uixó"),
-            status: m.status,
-            lat: m.lat,
-            lon: m.lon,
-          })
-          seenMuns.add(m.name)
-        }
-      })
-    }
-  }
-  
-  const municipios = municipiosConStatus
+  // Municipios afectados por el incendio (datos oficiales Cecopi/Generalitat)
+  // ACTUALIZAR MANUALMENTE cuando haya novedades oficiales
+  const municipios = [
+    // Confinados
+    { name: "La Vall d'Uixó", status: 'confined', lat: 39.8447, lon: -0.2564 },
+    { name: 'Almassora', status: 'confined', lat: 39.9511, lon: -0.0442 },
+    { name: 'Almenara', status: 'confined', lat: 39.8697, lon: -0.1636 },
+    { name: 'Betxí', status: 'confined', lat: 39.8636, lon: -0.2089 },
+    { name: 'Eslida', status: 'confined', lat: 39.8436, lon: -0.3253 },
+    { name: 'Aín', status: 'confined', lat: 39.8503, lon: -0.3614 },
+    { name: 'Azuébar', status: 'confined', lat: 39.8714, lon: -0.3864 },
+    { name: 'Castellnovo', status: 'confined', lat: 39.8711, lon: -0.4136 },
+    { name: 'Chóvar', status: 'confined', lat: 39.8886, lon: -0.4114 },
+    { name: 'Geldo', status: 'confined', lat: 39.8764, lon: -0.4336 },
+    { name: 'Higueras', status: 'confined', lat: 39.8886, lon: -0.4469 },
+    { name: 'Jérica', status: 'confined', lat: 39.9011, lon: -0.4636 },
+    { name: 'Matet', status: 'confined', lat: 39.9136, lon: -0.4769 },
+    { name: 'Pavías', status: 'confined', lat: 39.9261, lon: -0.4903 },
+    { name: 'Sot de Ferrer', status: 'confined', lat: 39.8836, lon: -0.4569 },
+    { name: 'Torres Torres', status: 'confined', lat: 39.8961, lon: -0.4703 },
+    { name: 'Algimia de Almonacid', status: 'confined', lat: 39.8586, lon: -0.4086 },
+    { name: 'Alfondeguilla', status: 'confined', lat: 39.8336, lon: -0.3469 },
+    { name: 'Suera', status: 'confined', lat: 39.8211, lon: -0.3336 },
+    { name: 'Vall de Almonacid', status: 'confined', lat: 39.8461, lon: -0.3903 },
+    
+    // Evacuados (núcleos específicos)
+    { name: 'Artana', status: 'evacuated', lat: 39.8836, lon: -0.2736 },
+    { name: 'Tales', status: 'evacuated', lat: 39.8711, lon: -0.2903 },
+    { name: 'Ayódar', status: 'evacuated', lat: 39.8586, lon: -0.3069 },
+    { name: 'Fanzara', status: 'evacuated', lat: 39.8461, lon: -0.3203 },
+  ]
 
   // Calcular personas afectadas (estimación por municipio)
   const poblacionPorMunicipio = {
@@ -215,9 +196,7 @@ async function main() {
     generatedAt: new Date().toISOString(),
     sources: {
       firms: 'NASA FIRMS (VIIRS NOAA-20/21, Suomi-NPP + MODIS C6.1)',
-      municipalities: newsData.fuentes.length > 0 
-        ? `Cecopi / Generalitat Valenciana vía scraping RSS (${newsData.fuentes.map(f => f.medio).join(', ')})`
-        : 'Cecopi / Generalitat Valenciana (datos estáticos)',
+      municipalities: 'Cecopi / Generalitat Valenciana (datos oficiales)',
       geocoding: 'OpenStreetMap Nominatim',
     },
     incident: {
@@ -235,7 +214,6 @@ async function main() {
     active,
     cooled,
     municipalities: municipios,
-    newsSources: newsData.fuentes.slice(0, 5), // Últimas 5 fuentes
   }
 
   writeFileSync(join(outDir, 'fire.json'), JSON.stringify(payload))
