@@ -166,33 +166,31 @@ async function main() {
 
   // Calcular personas afectadas (estimación por municipio)
   // Calcular personas afectadas desde el JSON
-  let confinedPeople = 0
-  let evacuatedPeople = 0
+  let confinedPeople
+  let evacuatedPeople
   
   const munDataPath = join(root, 'public', 'data', 'municipios.json')
   if (existsSync(munDataPath)) {
     const data = JSON.parse(readFileSync(munDataPath, 'utf8'))
-    confinedPeople = data._personas_afectadas_estimadas?.confinadas || 0
-    evacuatedPeople = data._personas_afectadas_estimadas?.evacuadas || 0
+    confinedPeople = data._personas_afectadas_estimadas?.confinadas
+    evacuatedPeople = data._personas_afectadas_estimadas?.evacuadas
   }
   
-  // Fallback: calcular automáticamente si no hay datos en JSON
-  if (confinedPeople === 0 || evacuatedPeople === 0) {
-    const poblacionPorMunicipio = {
-      "La Vall d'Uixó": 31000, 'Almassora': 27000, 'Artana': 1800, 'Tales': 350,
-    }
-    
-    if (confinedPeople === 0) {
-      confinedPeople = municipios
-        .filter(m => m.status === 'confined')
-        .reduce((sum, m) => sum + (poblacionPorMunicipio[m.name] || 2000), 0)
-    }
-    
-    if (evacuatedPeople === 0) {
-      evacuatedPeople = municipios
-        .filter(m => m.status === 'evacuated')
-        .reduce((sum, m) => sum + (poblacionPorMunicipio[m.name] || 500), 0)
-    }
+  // Si no hay datos en JSON, calcular automáticamente
+  const poblacionPorMunicipio = {
+    "La Vall d'Uixó": 31000, 'Almassora': 27000, 'Artana': 1800, 'Tales': 350,
+  }
+  
+  if (confinedPeople === undefined) {
+    confinedPeople = municipios
+      .filter(m => m.status === 'confined')
+      .reduce((sum, m) => sum + (poblacionPorMunicipio[m.name] || 2000), 0)
+  }
+  
+  if (evacuatedPeople === undefined) {
+    evacuatedPeople = municipios
+      .filter(m => m.status === 'evacuated')
+      .reduce((sum, m) => sum + (poblacionPorMunicipio[m.name] || 500), 0)
   }
   
   const payload = {
