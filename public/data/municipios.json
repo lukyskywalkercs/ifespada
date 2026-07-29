@@ -1,29 +1,38 @@
 {
   "_instrucciones": "Actualizar manualmente con datos oficiales del Cecopi/Generalitat. Formato: status = 'confined' o 'evacuated'",
-  "_fuente_oficial": "https://emergencies.gva.es/ y @GVAemergencies en Twitter",
-  "_ultima_actualizacion": "2026-07-29 - ÚLTIMA HORA - Según CECOPi",
+  "_fuente_oficial": "CECOPi Generalitat Valenciana - Nota de prensa última hora",
+  "_ultima_actualizacion": "2026-07-29 - 15 núcleos desalojados + 3 desconfinados parciales",
   
   "municipios": [
-    {
-      "name": "Artana",
-      "status": "evacuated",
-      "lat": 39.8836,
-      "lon": -0.2736,
-      "nota": "Sector 1 evacuado - Última hora"
-    },
-    {
-      "name": "Tales",
-      "status": "evacuated",
-      "lat": 39.8711,
-      "lon": -0.2903,
-      "nota": "Evacuación preventiva - Última hora"
-    }
+    { "name": "Aín", "status": "evacuated", "lat": 39.8503, "lon": -0.3614, "nota": "Desalojo total" },
+    { "name": "Alcudia de Veo", "status": "evacuated", "lat": 39.8369, "lon": -0.3069, "nota": "Desalojo total" },
+    { "name": "Alfondeguilla", "status": "evacuated", "lat": 39.8336, "lon": -0.3469, "nota": "Desalojo total" },
+    { "name": "Tales", "status": "evacuated", "lat": 39.8711, "lon": -0.2903, "nota": "Desalojo total" },
+    { "name": "Eslida", "status": "evacuated", "lat": 39.8436, "lon": -0.3253, "nota": "Desalojo total" },
+    { "name": "Artana", "status": "evacuated", "lat": 39.8836, "lon": -0.2736, "nota": "Desalojo total" },
+    { "name": "Suera", "status": "evacuated", "lat": 39.8211, "lon": -0.3336, "nota": "Desalojo total" },
+    { "name": "Villamalur", "status": "evacuated", "lat": 39.8586, "lon": -0.3203, "nota": "Desalojo total" },
+    { "name": "Torralba", "status": "evacuated", "lat": 39.8461, "lon": -0.3469, "nota": "Desalojo total" },
+    { "name": "Ayódar", "status": "evacuated", "lat": 39.8586, "lon": -0.3069, "nota": "Desalojo total" },
+    { "name": "Fuentes de Ayódar", "status": "evacuated", "lat": 39.8711, "lon": -0.3336, "nota": "Desalojo total" },
+    { "name": "Chóvar", "status": "evacuated", "lat": 39.8886, "lon": -0.4114, "nota": "Desalojo total" },
+    { "name": "Azuébar", "status": "evacuated", "lat": 39.8714, "lon": -0.3864, "nota": "Desalojo total" },
+    { "name": "Almedíjar", "status": "evacuated", "lat": 39.8836, "lon": -0.4003, "nota": "Desalojo total" },
+    { "name": "Artesa (pedanía de Onda)", "status": "evacuated", "lat": 39.9211, "lon": -0.2236, "nota": "Pedanía desalojada" }
   ],
   
   "_total_confinados": 0,
-  "_total_evacuados": 2,
+  "_total_evacuados": 15,
   "_personas_afectadas_estimadas": {
     "confinadas": 0,
-    "evacuadas": 2500
+    "evacuadas": 8500
+  },
+  
+  "_notas_adicionales": {
+    "desconfinados_parciales": [
+      "La Vilavella: Desconfinamiento total (aviso: agua no potable 72h)",
+      "Onda: Desconfinado casco urbano (Nueva Onda confinada, Artesa evacuada)",
+      "Betxí: Desconfinado núcleo urbano (Solaig, Montserrat, Penya Negra confinadas)"
+    ]
   }
 }
