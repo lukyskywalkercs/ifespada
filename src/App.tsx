@@ -214,8 +214,12 @@ export default function App() {
             <footer className="site-credit">
               <span>Desarrollado por Lind Informática</span>
               <span className="credit-sep">•</span>
-              <a href="https://www.lindinformatica.co" target="_blank" rel="noreferrer" className="credit-link">
-                Contacto
+              <a href="mailto:lucas@lindinformatica.com" className="credit-link">
+                Email
+              </a>
+              <span className="credit-sep">•</span>
+              <a href="https://www.linkedin.com/in/lucas-chabrera-querol/" target="_blank" rel="noreferrer" className="credit-link">
+                LinkedIn
               </a>
             </footer>
           </section>
@@ -283,6 +287,17 @@ export default function App() {
                   <span>Evacuadas</span>
                   <strong>{formatNumber(data.incident.evacuatedPeople)}</strong>
                 </div>
+              </div>
+              
+              <div className="satellite-info">
+                <p className="satellite-label">
+                  <span className="satellite-icon">🛰️</span>
+                  Datos satelitales en tiempo casi real
+                </p>
+                <p className="satellite-desc">
+                  Detecciones térmicas de los satélites VIIRS (NOAA-20/21, Suomi-NPP) y MODIS de la NASA. 
+                  Actualizado cada 6-12 horas según paso orbital.
+                </p>
               </div>
             </section>
 
