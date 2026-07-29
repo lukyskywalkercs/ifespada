@@ -101,32 +101,42 @@ export function FireMap({
 
   useEffect(() => {
     const map = mapRef.current
-    if (!map || !readyRef.current) return
+    if (!map) return
 
-    townMarkersRef.current.forEach(m => m.remove())
-    townMarkersRef.current = []
+    const renderTowns = () => {
+      townMarkersRef.current.forEach(m => m.remove())
+      townMarkersRef.current = []
 
-    municipalities.forEach(town => {
-      const visible =
-        (town.status === 'confined' && layers.confined) ||
-        (town.status === 'evacuated' && layers.evacuated)
-      if (!visible) return
+      municipalities.forEach(town => {
+        const visible =
+          (town.status === 'confined' && layers.confined) ||
+          (town.status === 'evacuated' && layers.evacuated)
+        if (!visible) return
 
-      const el = makeTownEl(town)
-      el.addEventListener('click', (ev) => {
-        ev.stopPropagation()
-        const title = town.status === 'confined' ? 'Municipio confinado' : 'Nucleo evacuado'
-        popupRef.current
-          ?.setLngLat([town.lon, town.lat])
-          .setHTML('<div class="popup"><h3>' + town.name + '</h3><p>' + title + '</p></div>')
+        const el = makeTownEl(town)
+        el.addEventListener('click', (ev) => {
+          ev.stopPropagation()
+          const title = town.status === 'confined' ? 'Municipio confinado' : 'Nucleo evacuado'
+          popupRef.current
+            ?.setLngLat([town.lon, town.lat])
+            .setHTML('<div class="popup"><h3>' + town.name + '</h3><p>' + title + '</p></div>')
+            .addTo(map)
+        })
+
+        const marker = new Marker({ element: el, anchor: 'bottom' })
+          .setLngLat([town.lon, town.lat])
           .addTo(map)
+        townMarkersRef.current.push(marker)
       })
+    }
 
-      const marker = new Marker({ element: el, anchor: 'bottom' })
-        .setLngLat([town.lon, town.lat])
-        .addTo(map)
-      townMarkersRef.current.push(marker)
-    })
+    // Si el mapa ya está listo, pintar inmediatamente
+    if (map.isStyleLoaded()) {
+      renderTowns()
+    } else {
+      // Si no, esperar a que cargue
+      map.once('load', renderTowns)
+    }
   }, [municipalities, layers.confined, layers.evacuated])
 
   useEffect(() => {
