@@ -165,25 +165,13 @@ async function main() {
   }
 
   // Calcular personas afectadas (estimación por municipio)
-  const poblacionPorMunicipio = {
-    "La Vall d'Uixó": 31000, 'Almassora': 27000, 'Almenara': 7000,
-    'Vila-real': 52000, 'Burriana': 35000, 'Nules': 14000,
-  }
-  
-  const confinedPeople = municipios
-    .filter(m => m.status === 'confined')
-    .reduce((sum, m) => sum + (poblacionPorMunicipio[m.name] || 2000), 0)
-  
-  const evacuatedPeople = municipios
-    .filter(m => m.status === 'evacuated')
-    .reduce((sum, m) => sum + (poblacionPorMunicipio[m.name] || 2000), 0)
-  desde el JSON (si existen los campos)
+  // Calcular personas afectadas desde el JSON
   let confinedPeople = 0
   let evacuatedPeople = 0
   
-  const munPath = join(root, 'public', 'data', 'municipios.json')
-  if (existsSync(munPath)) {
-    const data = JSON.parse(readFileSync(munPath, 'utf8'))
+  const munDataPath = join(root, 'public', 'data', 'municipios.json')
+  if (existsSync(munDataPath)) {
+    const data = JSON.parse(readFileSync(munDataPath, 'utf8'))
     confinedPeople = data._personas_afectadas_estimadas?.confinadas || 0
     evacuatedPeople = data._personas_afectadas_estimadas?.evacuadas || 0
   }
