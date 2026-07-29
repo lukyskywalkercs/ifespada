@@ -1,0 +1,43 @@
+{
+  "_instrucciones": "Actualizar manualmente con datos oficiales del Cecopi/Generalitat. Formato: status = 'confined' o 'evacuated'",
+  "_fuente_oficial": "https://emergencies.gva.es/ y @GVAemergencies en Twitter",
+  "_ultima_actualizacion": "2026-07-29 - Verificar con nota de prensa más reciente",
+  
+  "municipios": [
+    {
+      "name": "La Vall d'Uixó",
+      "status": "confined",
+      "lat": 39.8447,
+      "lon": -0.2564,
+      "nota": "Confinamiento preventivo desde 27 jul"
+    },
+    {
+      "name": "Almassora",
+      "status": "confined",
+      "lat": 39.9511,
+      "lon": -0.0442,
+      "nota": "Zonas costeras confinadas"
+    },
+    {
+      "name": "Artana",
+      "status": "evacuated",
+      "lat": 39.8836,
+      "lon": -0.2736,
+      "nota": "Evacuación total núcleo urbano"
+    },
+    {
+      "name": "Tales",
+      "status": "evacuated",
+      "lat": 39.8711,
+      "lon": -0.2903,
+      "nota": "Evacuación preventiva"
+    }
+  ],
+  
+  "_total_confinados": 2,
+  "_total_evacuados": 2,
+  "_personas_afectadas_estimadas": {
+    "confinadas": 58000,
+    "evacuadas": 3200
+  }
+}

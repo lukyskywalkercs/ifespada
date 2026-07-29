@@ -1,7 +1,6 @@
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { scrape } from './scrape-municipios.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
@@ -146,37 +145,24 @@ async function main() {
     cooled.push(d)
   }
 
-  // Municipios afectados por el incendio (datos oficiales Cecopi/Generalitat)
-  // ACTUALIZAR MANUALMENTE cuando haya novedades oficiales
-  const municipios = [
-    // Confinados
-    { name: "La Vall d'Uixó", status: 'confined', lat: 39.8447, lon: -0.2564 },
-    { name: 'Almassora', status: 'confined', lat: 39.9511, lon: -0.0442 },
-    { name: 'Almenara', status: 'confined', lat: 39.8697, lon: -0.1636 },
-    { name: 'Betxí', status: 'confined', lat: 39.8636, lon: -0.2089 },
-    { name: 'Eslida', status: 'confined', lat: 39.8436, lon: -0.3253 },
-    { name: 'Aín', status: 'confined', lat: 39.8503, lon: -0.3614 },
-    { name: 'Azuébar', status: 'confined', lat: 39.8714, lon: -0.3864 },
-    { name: 'Castellnovo', status: 'confined', lat: 39.8711, lon: -0.4136 },
-    { name: 'Chóvar', status: 'confined', lat: 39.8886, lon: -0.4114 },
-    { name: 'Geldo', status: 'confined', lat: 39.8764, lon: -0.4336 },
-    { name: 'Higueras', status: 'confined', lat: 39.8886, lon: -0.4469 },
-    { name: 'Jérica', status: 'confined', lat: 39.9011, lon: -0.4636 },
-    { name: 'Matet', status: 'confined', lat: 39.9136, lon: -0.4769 },
-    { name: 'Pavías', status: 'confined', lat: 39.9261, lon: -0.4903 },
-    { name: 'Sot de Ferrer', status: 'confined', lat: 39.8836, lon: -0.4569 },
-    { name: 'Torres Torres', status: 'confined', lat: 39.8961, lon: -0.4703 },
-    { name: 'Algimia de Almonacid', status: 'confined', lat: 39.8586, lon: -0.4086 },
-    { name: 'Alfondeguilla', status: 'confined', lat: 39.8336, lon: -0.3469 },
-    { name: 'Suera', status: 'confined', lat: 39.8211, lon: -0.3336 },
-    { name: 'Vall de Almonacid', status: 'confined', lat: 39.8461, lon: -0.3903 },
-    
-    // Evacuados (núcleos específicos)
-    { name: 'Artana', status: 'evacuated', lat: 39.8836, lon: -0.2736 },
-    { name: 'Tales', status: 'evacuated', lat: 39.8711, lon: -0.2903 },
-    { name: 'Ayódar', status: 'evacuated', lat: 39.8586, lon: -0.3069 },
-    { name: 'Fanzara', status: 'evacuated', lat: 39.8461, lon: -0.3203 },
-  ]
+  // Cargar municipios desde archivo JSON (actualización manual)
+  let municipios = []
+  const munPath = join(root, 'public', 'data', 'municipios.json')
+  
+  if (existsSync(munPath)) {
+    const data = JSON.parse(readFileSync(munPath, 'utf8'))
+    municipios = data.municipios.map(m => ({
+      name: m.name,
+      status: m.status,
+      lat: m.lat,
+      lon: m.lon,
+    }))
+    console.log(`✅ ${municipios.length} municipios cargados desde municipios.json`)
+    console.log(`   Confinados: ${municipios.filter(m => m.status === 'confined').length}`)
+    console.log(`   Evacuados: ${municipios.filter(m => m.status === 'evacuated').length}`)
+  } else {
+    console.warn('⚠️  No existe municipios.json, usando array vacío')
+  }
 
   // Calcular personas afectadas (estimación por municipio)
   const poblacionPorMunicipio = {
@@ -191,19 +177,35 @@ async function main() {
   const evacuatedPeople = municipios
     .filter(m => m.status === 'evacuated')
     .reduce((sum, m) => sum + (poblacionPorMunicipio[m.name] || 2000), 0)
+  desde el JSON (si existen los campos)
+  let confinedPeople = 0
+  let evacuatedPeople = 0
   
-  const payload = {
-    generatedAt: new Date().toISOString(),
-    sources: {
-      firms: 'NASA FIRMS (VIIRS NOAA-20/21, Suomi-NPP + MODIS C6.1)',
-      municipalities: 'Cecopi / Generalitat Valenciana (datos oficiales)',
-      geocoding: 'OpenStreetMap Nominatim',
-    },
-    incident: {
-      name: "Incendio Serra d'Espadà · Vall d'Uixó",
-      started: '2026-07-25T11:00:00+02:00',
-      hectares: 8500,
-      perimeterKm: 72,
+  const munPath = join(root, 'public', 'data', 'municipios.json')
+  if (existsSync(munPath)) {
+    const data = JSON.parse(readFileSync(munPath, 'utf8'))
+    confinedPeople = data._personas_afectadas_estimadas?.confinadas || 0
+    evacuatedPeople = data._personas_afectadas_estimadas?.evacuadas || 0
+  }
+  
+  // Fallback: calcular automáticamente si no hay datos en JSON
+  if (confinedPeople === 0 || evacuatedPeople === 0) {
+    const poblacionPorMunicipio = {
+      "La Vall d'Uixó": 31000, 'Almassora': 27000, 'Artana': 1800, 'Tales': 350,
+    }
+    
+    if (confinedPeople === 0) {
+      confinedPeople = municipios
+        .filter(m => m.status === 'confined')
+        .reduce((sum, m) => sum + (poblacionPorMunicipio[m.name] || 2000), 0)
+    }
+    
+    if (evacuatedPeople === 0) {
+      evacuatedPeople = municipios
+        .filter(m => m.status === 'evacuated')
+        .reduce((sum, m) => sum + (poblacionPorMunicipio[m.name] || 500), 0)
+    }
+  }
       status: 'Activo — ni estabilizado ni controlado',
       confinedPeople: confinedPeople || 64000,
       evacuatedPeople: evacuatedPeople || 16000,
