@@ -194,6 +194,19 @@ async function main() {
         .reduce((sum, m) => sum + (poblacionPorMunicipio[m.name] || 500), 0)
     }
   }
+  
+  const payload = {
+    generatedAt: new Date().toISOString(),
+    sources: {
+      firms: 'NASA FIRMS (VIIRS NOAA-20/21, Suomi-NPP + MODIS C6.1)',
+      municipalities: 'Cecopi / Generalitat Valenciana (datos oficiales)',
+      geocoding: 'OpenStreetMap Nominatim',
+    },
+    incident: {
+      name: "Incendio Serra d'Espadà · Vall d'Uixó",
+      started: '2026-07-25T11:00:00+02:00',
+      hectares: 8500,
+      perimeterKm: 72,
       status: 'Activo — ni estabilizado ni controlado',
       confinedPeople: confinedPeople || 64000,
       evacuatedPeople: evacuatedPeople || 16000,
