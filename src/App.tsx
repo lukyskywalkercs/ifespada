@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { FireMap } from './components/FireMap'
+import { AirQualityPanel } from './components/AirQualityPanel'
 import {
   fetchLiveSnapshot,
   formatNumber,
@@ -180,6 +181,8 @@ export default function App() {
               layers={layers}
               onReady={() => setMapReady(true)}
             />
+
+            <AirQualityPanel />
 
             <div className="map-chrome">
               <div className="map-legend" role="group" aria-label="Capas del mapa">
