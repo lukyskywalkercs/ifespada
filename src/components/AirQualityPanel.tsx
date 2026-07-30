@@ -41,7 +41,7 @@ export function AirQualityPanel() {
     const fetchAirQuality = async () => {
       try {
         // Open-Meteo API (gratis, sin API key) - incluye calidad del aire y meteorología
-        const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${LAT}&longitude=${LON}&current=pm2_5,pm10,ozone,nitrogen_dioxide,sulphur_dioxide&forecast_daily=temperature_2m_max,wind_speed_10m_max,relative_humidity_2m&timezone=auto`
+        const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${LAT}&longitude=${LON}&current=pm2_5,pm10,ozone,nitrogen_dioxide,sulphur_dioxide,temperature_2m,wind_speed_10,wind_direction_10,relative_humidity_2m&forecast_daily=temperature_2m_max,wind_speed_10m_max,relative_humidity_2m&timezone=auto`
         
         const res = await fetch(url)
         if (!res.ok) throw new Error('No se pudo cargar la calidad del aire')
@@ -66,16 +66,19 @@ export function AirQualityPanel() {
         
         const category = aqi ? getAQICategory(aqi) : null
         
+        // Open-Meteo devuelve temperature_2m (actual), no temperature_2m_max para current
+        const currentTemp = json.current?.temperature_2m ?? daily.temperature_2m_max?.[0] ?? null
+        
         setData({
           pm25: pm25 !== null ? Math.round(pm25 * 10) / 10 : null,
           pm10: pm10 !== null ? Math.round(pm10 * 10) / 10 : null,
           aqi,
           aqiCategory: category?.label ?? 'N/A',
           aqiColor: category?.color ?? '#a8a29e',
-          temperature: daily.temperature_2m_max?.[0] ?? null,
-          windSpeed: daily.wind_speed_10m_max?.[0] ?? null,
-          windDir: null, // Open-Meteo no devuelve dirección en esta endpoint
-          humidity: daily.relative_humidity_2m?.[0] ?? null,
+          temperature: currentTemp !== null ? Math.round(currentTemp * 10) / 10 : null,
+          windSpeed: json.current?.wind_speed_10 ?? daily.wind_speed_10m_max?.[0] ?? null,
+          windDir: json.current?.wind_direction_10 ?? null,
+          humidity: json.current?.relative_humidity_2m ?? daily.relative_humidity_2m?.[0] ?? null,
           lastUpdate: new Date().toISOString(),
         })
       } catch (err) {
