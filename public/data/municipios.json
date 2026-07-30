@@ -1,23 +1,23 @@
 {
-  "_instrucciones": "Actualizar manualmente con datos oficiales del Cecopi/Generalitat. Formato: status = 'confined' o 'evacuated'",
-  "_fuente_oficial": "CECOPi Generalitat Valenciana - Nota de prensa 30 julio 2026",
-  "_ultima_actualizacion": "2026-07-30 - CECOPI tarde: 14 municipios + urbanizaciones Betxí + Artesa evacuados | Nova Onda confinada",
+  "_instrucciones": "Actualizar manualmente con datos oficiales del Cecopi/Generalitat. Formato: status = 'confined', 'evacuated' o 'returning_home'",
+  "_fuente_oficial": "CECOPi Generalitat Valenciana - Nota de prensa 31 julio 2026",
+  "_ultima_actualizacion": "2026-07-31 - Incendio perimetrado. Zonas controladas: Alcudia de Veo, Veo, Benitandus, Tales. Retornan hoy: Villamalur, Torralba, Ayodar, Fuentes de Ayodar, Azuebar, Almedijar",
   
   "municipios": [
     { "name": "Aín", "status": "evacuated", "lat": 39.8503, "lon": -0.3614, "nota": "Desalojo total" },
-    { "name": "Alcudia de Veo", "status": "evacuated", "lat": 39.8369, "lon": -0.3069, "nota": "Desalojo total (incluida pedanía de Veo)" },
+    { "name": "Alcudia de Veo", "status": "controlled", "lat": 39.8369, "lon": -0.3069, "nota": "Zona controlada - incendio perimetrado (incluida pedanía de Veo)" },
     { "name": "Alfondeguilla", "status": "evacuated", "lat": 39.8336, "lon": -0.3469, "nota": "Desalojo total" },
-    { "name": "Tales", "status": "evacuated", "lat": 39.8711, "lon": -0.2903, "nota": "Desalojo total" },
+    { "name": "Tales", "status": "controlled", "lat": 39.8711, "lon": -0.2903, "nota": "Zona controlada - incendio perimetrado" },
     { "name": "Eslida", "status": "evacuated", "lat": 39.8436, "lon": -0.3253, "nota": "Desalojo total" },
     { "name": "Artana", "status": "evacuated", "lat": 39.8836, "lon": -0.2736, "nota": "Desalojo total" },
     { "name": "Suera", "status": "evacuated", "lat": 39.8211, "lon": -0.3336, "nota": "Desalojo total" },
-    { "name": "Villamalur", "status": "evacuated", "lat": 39.8586, "lon": -0.3203, "nota": "Desalojo total" },
-    { "name": "Torralba del Pinar", "status": "evacuated", "lat": 39.8461, "lon": -0.3469, "nota": "Desalojo total" },
-    { "name": "Ayódar", "status": "evacuated", "lat": 39.8586, "lon": -0.3069, "nota": "Desalojo total" },
-    { "name": "Fuentes de Ayódar", "status": "evacuated", "lat": 39.8711, "lon": -0.3336, "nota": "Desalojo total" },
+    { "name": "Villamalur", "status": "returning_home", "lat": 39.8586, "lon": -0.3203, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
+    { "name": "Torralba del Pinar", "status": "returning_home", "lat": 39.8461, "lon": -0.3469, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
+    { "name": "Ayódar", "status": "returning_home", "lat": 39.8586, "lon": -0.3069, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
+    { "name": "Fuentes de Ayódar", "status": "returning_home", "lat": 39.8711, "lon": -0.3336, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
     { "name": "Chóvar", "status": "evacuated", "lat": 39.8886, "lon": -0.4114, "nota": "Desalojo total" },
-    { "name": "Azuébar", "status": "evacuated", "lat": 39.8714, "lon": -0.3864, "nota": "Desalojo total" },
-    { "name": "Almedíjar", "status": "evacuated", "lat": 39.8836, "lon": -0.4003, "nota": "Desalojo total" },
+    { "name": "Azuébar", "status": "returning_home", "lat": 39.8714, "lon": -0.3864, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
+    { "name": "Almedíjar", "status": "returning_home", "lat": 39.8836, "lon": -0.4003, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
     { "name": "Artesa (pedanía de Onda)", "status": "evacuated", "lat": 39.9211, "lon": -0.2236, "nota": "Pedanía desalojada" },
     { "name": "Solaig (Betxí)", "status": "evacuated", "lat": 39.8950, "lon": -0.2650, "nota": "Urbanización evacuada" },
     { "name": "Montserrat (Betxí)", "status": "evacuated", "lat": 39.8970, "lon": -0.2680, "nota": "Urbanización evacuada" },
@@ -26,24 +26,50 @@
   ],
   
   "_total_confinados": 1,
-  "_total_evacuados": 18,
+  "_total_controlados": 2,
+  "_total_retornan_hoy": 6,
+  "_total_evacuados_pendientes": 10,
   "_personas_afectadas_estimadas": {
     "confinadas": 2000,
-    "evacuadas": 7600
+    "controladas": 1500,
+    "retornan_hoy": 2500,
+    "evacuadas_pendientes": 4000
   },
   
   "_datos_incendio": {
     "hectareas": 9300,
     "perimetro_km": 82,
+    "estado": "Perimetrado - trabajando en puntos concretos para controlar",
     "efectivos": 1200,
     "medios_aereos": 35
   },
   
   "_notas_adicionales": {
-    "vigencia_medidas": "Hasta 23:59h del 30 de julio de 2026",
+    "vigencia_medidas": "Actualizado 31 julio 2026 - Evolución favorable",
+    "estado_incendio": "Perimetrado - equipos trabajan en puntos concretos para control total",
+    "zonas_controladas": [
+      "Alcudia de Veo (incluida pedanía de Veo)",
+      "Benitandus",
+      "Tales"
+    ],
+    "retornan_hoy_31_julio": [
+      "Villamalur",
+      "Torralba del Pinar",
+      "Ayódar",
+      "Fuentes de Ayódar",
+      "Azuébar",
+      "Almedíjar"
+    ],
+    "evacuados_pendientes": [
+      "Artana", "Eslida", "Aín", "Alfondeguilla",
+      "Suera", "Chóvar",
+      "Urbanizaciones Solaig, Montserrat y Peña Negra (Betxí)",
+      "Pedanía de Artesa (Onda)"
+    ],
     "recomendaciones": [
       "Consumo de agua embotellada en zonas afectadas (especialmente La Vilavella)",
-      "Utilización de mascarillas en zonas de confinamiento"
+      "Utilización de mascarillas en zonas de confinamiento",
+      "Seguir indicaciones de las autoridades locales para retornos"
     ],
     "convoyes_mascotas": "Fuerzas de Seguridad organizarán convoyes con alcaldes para acceso a municipios evacuados",
     "realojamientos": {
@@ -55,10 +81,10 @@
       "total_realojados": 149
     },
     "municipios_evacuados_lista": [
-      "Artana", "Eslida", "Aín", "Alcudia de Veo (incluida pedanía de Veo)",
-      "Tales", "Alfondeguilla", "Fuentes de Ayódar", "Ayódar",
-      "Torralba del Pinar", "Sueras", "Villamalur", "Chóvar",
-      "Azuébar", "Almedíjar",
+      "Artana", "Eslida", "Aín", "Alcudia de Veo (incluida pedanía de Veo) [CONTROLADO]",
+      "Tales [CONTROLADO]", "Alfondeguilla", "Fuentes de Ayódar [RETORNA HOY]", "Ayódar [RETORNA HOY]",
+      "Torralba del Pinar [RETORNA HOY]", "Sueras", "Villamalur [RETORNA HOY]", "Chóvar",
+      "Azuébar [RETORNA HOY]", "Almedíjar [RETORNA HOY]",
       "Urbanizaciones Solaig, Montserrat y Peña Negra (Betxí)",
       "Pedanía de Artesa (Onda)"
     ],
