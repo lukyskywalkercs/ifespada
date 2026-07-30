@@ -136,6 +136,38 @@ export function FireMap({ active, cooled, municipalities, layers, onReady }: Fir
     }
   }, [onReady])
 
+  // Actualizar focos cuando cambien layers
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !readyRef.current) return
+    fireMarkersRef.current.forEach(m => m.remove())
+    fireMarkersRef.current = []
+    
+    // FOCOS ACTIVOS
+    if (layers.active) {
+      active.forEach(d => {
+        const el = createFireMarkerElement('active', d.frp ?? undefined)
+        el.addEventListener('click', (e) => {
+          e.stopPropagation()
+          popupRef.current?.setLngLat([d.lon, d.lat]).setHTML('<div class="popup"><h3>Foco activo</h3><p>' + formatAcq(d.acq_date, d.acq_time) + '</p></div>').addTo(map)
+        })
+        fireMarkersRef.current.push(new Marker({ element: el, anchor: 'center' }).setLngLat([d.lon, d.lat]).addTo(map))
+      })
+    }
+    
+    // FOCOS COOLED
+    if (layers.cooled) {
+      cooled.forEach(d => {
+        const el = createFireMarkerElement('cooled')
+        el.addEventListener('click', (e) => {
+          e.stopPropagation()
+          popupRef.current?.setLngLat([d.lon, d.lat]).setHTML('<div class="popup"><h3>Sin deteccion reciente</h3><p>' + formatAcq(d.acq_date, d.acq_time) + '</p></div>').addTo(map)
+        })
+        fireMarkersRef.current.push(new Marker({ element: el, anchor: 'center' }).setLngLat([d.lon, d.lat]).addTo(map))
+      })
+    }
+  }, [active, cooled, layers.active, layers.cooled])
+
   // Actualizar municipios cuando cambien layers
   useEffect(() => {
     const map = mapRef.current
