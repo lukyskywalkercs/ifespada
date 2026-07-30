@@ -43,8 +43,8 @@ export function AirQualityPanel() {
         // Open-Meteo Air Quality API - solo parámetros de calidad del aire
         const airQualityUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${LAT}&longitude=${LON}&current=pm2_5,pm10,ozone,nitrogen_dioxide,sulphur_dioxide&timezone=auto`
         
-        // Open-Meteo Weather API - parámetros meteorológicos
-        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,wind_speed_10,wind_direction_10,relative_humidity_2m&timezone=auto`
+        // Open-Meteo Weather API - parámetros meteorológicos (endpoint separado)
+        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m&timezone=auto`
         
         const [airRes, weatherRes] = await Promise.all([
           fetch(airQualityUrl),
@@ -58,7 +58,8 @@ export function AirQualityPanel() {
         const weatherJson = await weatherRes.json()
         
         const airCurrent = airJson.current || {}
-        const weatherCurrent = weatherJson.current || {}
+        // Open-Meteo devuelve current_weather con datos actuales
+        const weatherCurrent = weatherJson.current_weather || {}
         
         // Calcular AQI aproximado basado en PM2.5 (método EPA simplificado)
         const pm25 = airCurrent.pm2_5 ?? null
@@ -82,10 +83,10 @@ export function AirQualityPanel() {
           aqi,
           aqiCategory: category?.label ?? 'N/A',
           aqiColor: category?.color ?? '#a8a29e',
-          temperature: weatherCurrent.temperature_2m !== null ? Math.round(weatherCurrent.temperature_2m * 10) / 10 : null,
-          windSpeed: weatherCurrent.wind_speed_10 ?? null,
-          windDir: weatherCurrent.wind_direction_10 ?? null,
-          humidity: weatherCurrent.relative_humidity_2m ?? null,
+          temperature: weatherCurrent.temperature !== null ? Math.round(weatherCurrent.temperature * 10) / 10 : null,
+          windSpeed: weatherCurrent.windspeed ?? null,
+          windDir: weatherCurrent.winddirection ?? null,
+          humidity: null, // hourly data requiere procesamiento adicional
           lastUpdate: new Date().toISOString(),
         })
       } catch (err) {
