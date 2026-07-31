@@ -1,39 +1,39 @@
 {
   "_instrucciones": "Actualizar manualmente con datos oficiales del Cecopi/Generalitat. Formato: status = 'confined', 'evacuated' o 'returning_home'",
-  "_fuente_oficial": "CECOPi Generalitat Valenciana - Nota de prensa 31 julio 2026",
-  "_ultima_actualizacion": "2026-07-31 - Incendio perimetrado. Zonas controladas: Alcudia de Veo, Veo, Benitandus, Tales. Retornan hoy: Villamalur, Torralba, Ayodar, Fuentes de Ayodar, Azuebar, Almedijar",
+  "_fuente_oficial": "112CV Generalitat Valenciana - Medidas Complementarias Incendio Vall d'Uixó 30 julio 2026",
+  "_ultima_actualizacion": "2026-07-31 23:59h - Alzamiento evacuación: Alfondeguilla, Chóvar, Suera. Mantienen evacuación: Artana, Eslida, Aín, Alcudia de Veo (Veo, Benitandus), Tales, urbanizaciones Betxí, Artesa (Onda)",
   
   "municipios": [
-    { "name": "Aín", "status": "evacuated", "lat": 39.8503, "lon": -0.3614, "nota": "Desalojo total" },
-    { "name": "Alcudia de Veo", "status": "controlled", "lat": 39.8369, "lon": -0.3069, "nota": "Zona controlada - incendio perimetrado (incluida pedanía de Veo)" },
-    { "name": "Alfondeguilla", "status": "evacuated", "lat": 39.8336, "lon": -0.3469, "nota": "Desalojo total" },
-    { "name": "Tales", "status": "controlled", "lat": 39.8711, "lon": -0.2903, "nota": "Zona controlada - incendio perimetrado" },
-    { "name": "Eslida", "status": "evacuated", "lat": 39.8436, "lon": -0.3253, "nota": "Desalojo total" },
-    { "name": "Artana", "status": "evacuated", "lat": 39.8836, "lon": -0.2736, "nota": "Desalojo total" },
-    { "name": "Suera", "status": "evacuated", "lat": 39.8211, "lon": -0.3336, "nota": "Desalojo total" },
+    { "name": "Aín", "status": "evacuated", "lat": 39.8503, "lon": -0.3614, "nota": "Mantiene evacuación hasta 23:59h 31 julio" },
+    { "name": "Alcudia de Veo", "status": "evacuated", "lat": 39.8369, "lon": -0.3069, "nota": "Mantiene evacuación hasta 23:59h 31 julio (incluidas pedanías de Veo y Benitandus)" },
+    { "name": "Alfondeguilla", "status": "returning_home", "lat": 39.8336, "lon": -0.3469, "nota": "Alzamiento evacuación - retornan hoy 31 julio" },
+    { "name": "Tales", "status": "evacuated", "lat": 39.8711, "lon": -0.2903, "nota": "Mantiene evacuación hasta 23:59h 31 julio" },
+    { "name": "Eslida", "status": "evacuated", "lat": 39.8436, "lon": -0.3253, "nota": "Mantiene evacuación hasta 23:59h 31 julio" },
+    { "name": "Artana", "status": "evacuated", "lat": 39.8836, "lon": -0.2736, "nota": "Mantiene evacuación hasta 23:59h 31 julio" },
+    { "name": "Suera", "status": "returning_home", "lat": 39.8211, "lon": -0.3336, "nota": "Alzamiento evacuación - retornan hoy 31 julio" },
     { "name": "Villamalur", "status": "returning_home", "lat": 39.8586, "lon": -0.3203, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
     { "name": "Torralba del Pinar", "status": "returning_home", "lat": 39.8461, "lon": -0.3469, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
     { "name": "Ayódar", "status": "returning_home", "lat": 39.8586, "lon": -0.3069, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
     { "name": "Fuentes de Ayódar", "status": "returning_home", "lat": 39.8711, "lon": -0.3336, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
-    { "name": "Chóvar", "status": "evacuated", "lat": 39.8886, "lon": -0.4114, "nota": "Desalojo total" },
+    { "name": "Chóvar", "status": "returning_home", "lat": 39.8886, "lon": -0.4114, "nota": "Alzamiento evacuación - retornan hoy 31 julio" },
     { "name": "Azuébar", "status": "returning_home", "lat": 39.8714, "lon": -0.3864, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
     { "name": "Almedíjar", "status": "returning_home", "lat": 39.8836, "lon": -0.4003, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
     { "name": "Artesa (pedanía de Onda)", "status": "evacuated", "lat": 39.9211, "lon": -0.2236, "nota": "Pedanía desalojada" },
-    { "name": "Solaig (Betxí)", "status": "evacuated", "lat": 39.8950, "lon": -0.2650, "nota": "Urbanización evacuada" },
-    { "name": "Montserrat (Betxí)", "status": "evacuated", "lat": 39.8970, "lon": -0.2680, "nota": "Urbanización evacuada" },
-    { "name": "Peña Negra (Betxí)", "status": "evacuated", "lat": 39.8990, "lon": -0.2700, "nota": "Urbanización evacuada" },
+    { "name": "Solaig (Betxí)", "status": "evacuated", "lat": 39.8950, "lon": -0.2650, "nota": "Mantiene evacuación hasta 23:59h 31 julio" },
+    { "name": "Montserrat (Betxí)", "status": "evacuated", "lat": 39.8970, "lon": -0.2680, "nota": "Mantiene evacuación hasta 23:59h 31 julio" },
+    { "name": "Peña Negra (Betxí)", "status": "evacuated", "lat": 39.8990, "lon": -0.2700, "nota": "Mantiene evacuación hasta 23:59h 31 julio" },
     { "name": "Nova Onda (Onda)", "status": "confined", "lat": 39.9100, "lon": -0.2400, "nota": "Confinamiento prorrogado hasta 23:59h 30 julio" }
   ],
   
-  "_total_confinados": 1,
-  "_total_controlados": 2,
-  "_total_retornan_hoy": 6,
-  "_total_evacuados_pendientes": 10,
+  "_total_confinados": 0,
+  "_total_controlados": 0,
+  "_total_retornan_hoy": 9,
+  "_total_evacuados_pendientes": 8,
   "_personas_afectadas_estimadas": {
-    "confinadas": 2000,
-    "controladas": 1500,
-    "retornan_hoy": 2500,
-    "evacuadas_pendientes": 4000
+    "confinadas": 0,
+    "controladas": 0,
+    "retornan_hoy": 4500,
+    "evacuadas_pendientes": 3500
   },
   
   "_datos_incendio": {
@@ -45,8 +45,10 @@
   },
   
   "_notas_adicionales": {
-    "vigencia_medidas": "Actualizado 31 julio 2026 - Evolución favorable",
+    "vigencia_medidas": "Actualizado 31 julio 2026 23:59h - Alzamiento parcial evacuaciones según orden 112CV",
     "estado_incendio": "Perimetrado - equipos trabajan en puntos concretos para control total",
+    "alzamientos_hoy": ["Alfondeguilla", "Chóvar", "Suera"],
+    "mantienen_evacuacion": ["Artana", "Eslida", "Aín", "Alcudia de Veo (Veo, Benitandus)", "Tales", "Solaig/Monserrat/Peña Negra (Betxí)", "Artesa (Onda)"],
     "zonas_controladas": [
       "Alcudia de Veo (incluida pedanía de Veo)",
       "Benitandus",
