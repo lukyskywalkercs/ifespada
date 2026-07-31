@@ -22,18 +22,18 @@
     { "name": "Solaig (Betxí)", "status": "evacuated", "lat": 39.8950, "lon": -0.2650, "nota": "Mantiene evacuación hasta 23:59h 31 julio" },
     { "name": "Montserrat (Betxí)", "status": "evacuated", "lat": 39.8970, "lon": -0.2680, "nota": "Mantiene evacuación hasta 23:59h 31 julio" },
     { "name": "Peña Negra (Betxí)", "status": "evacuated", "lat": 39.8990, "lon": -0.2700, "nota": "Mantiene evacuación hasta 23:59h 31 julio" },
-    { "name": "Nova Onda (Onda)", "status": "confined", "lat": 39.9100, "lon": -0.2400, "nota": "Confinamiento prorrogado hasta 23:59h 30 julio" }
+    { "name": "Nova Onda (Onda)", "status": "returning_home", "lat": 39.9100, "lon": -0.2400, "nota": "Confinamiento finalizado 30 julio - retornan hoy 31 julio" }
   ],
   
   "_total_confinados": 0,
   "_total_controlados": 0,
-  "_total_retornan_hoy": 9,
-  "_total_evacuados_pendientes": 8,
+  "_total_retornan_hoy": 10,
+  "_total_evacuados_pendientes": 7,
   "_personas_afectadas_estimadas": {
     "confinadas": 0,
     "controladas": 0,
-    "retornan_hoy": 4500,
-    "evacuadas_pendientes": 3500
+    "retornan_hoy": 6500,
+    "evacuadas_pendientes": 3000
   },
   
   "_datos_incendio": {
@@ -60,11 +60,14 @@
       "Ayódar",
       "Fuentes de Ayódar",
       "Azuébar",
-      "Almedíjar"
+      "Almedíjar",
+      "Alfondeguilla",
+      "Suera",
+      "Chóvar",
+      "Nova Onda (Onda)"
     ],
     "evacuados_pendientes": [
-      "Artana", "Eslida", "Aín", "Alfondeguilla",
-      "Suera", "Chóvar",
+      "Artana", "Eslida", "Aín", "Alcudia de Veo (Veo, Benitandus)", "Tales",
       "Urbanizaciones Solaig, Montserrat y Peña Negra (Betxí)",
       "Pedanía de Artesa (Onda)"
     ],
@@ -83,15 +86,16 @@
       "total_realojados": 149
     },
     "municipios_evacuados_lista": [
-      "Artana", "Eslida", "Aín", "Alcudia de Veo (incluida pedanía de Veo) [CONTROLADO]",
-      "Tales [CONTROLADO]", "Alfondeguilla", "Fuentes de Ayódar [RETORNA HOY]", "Ayódar [RETORNA HOY]",
-      "Torralba del Pinar [RETORNA HOY]", "Sueras", "Villamalur [RETORNA HOY]", "Chóvar",
-      "Azuébar [RETORNA HOY]", "Almedíjar [RETORNA HOY]",
-      "Urbanizaciones Solaig, Montserrat y Peña Negra (Betxí)",
-      "Pedanía de Artesa (Onda)"
+      "Artana [EVACUADO]", "Eslida [EVACUADO]", "Aín [EVACUADO]",
+      "Alcudia de Veo (incluida pedanía de Veo y Benitandus) [EVACUADO]",
+      "Tales [EVACUADO]",
+      "Alfondeguilla [RETORNA HOY]", "Suera [RETORNA HOY]", "Chóvar [RETORNA HOY]",
+      "Fuentes de Ayódar [RETORNA HOY]", "Ayódar [RETORNA HOY]",
+      "Torralba del Pinar [RETORNA HOY]", "Villamalur [RETORNA HOY]",
+      "Azuébar [RETORNA HOY]", "Almedíjar [RETORNA HOY]", "Nova Onda (Onda) [RETORNA HOY]",
+      "Urbanizaciones Solaig, Montserrat y Peña Negra (Betxí) [EVACUADO]",
+      "Pedanía de Artesa (Onda) [EVACUADO]"
     ],
-    "zonas_confinadas": [
-      "Nova Onda (Onda)"
-    ]
+    "zonas_confinadas": []
   }
 }

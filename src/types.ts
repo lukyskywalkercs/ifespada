@@ -1,4 +1,4 @@
-export type TownStatus = 'confined' | 'evacuated'
+export type TownStatus = 'confined' | 'evacuated' | 'returning_home'
 
 export interface Detection {
   lat: number
