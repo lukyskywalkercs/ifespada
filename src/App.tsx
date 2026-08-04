@@ -245,7 +245,7 @@ export default function App() {
                   </div>
                   {latestPass && (
                     <div>
-                      <dt>Última pasada</dt>
+                      <dt>Última detección satelital disponible</dt>
                       <dd>{formatPass(latestPass)}</dd>
                     </div>
                   )}
