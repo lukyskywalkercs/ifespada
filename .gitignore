@@ -8,3 +8,6 @@ J2_*.csv
 SUOMI_*.csv
 MODIS_*.csv
 firms_espadà.json
+
+# Local Netlify folder
+.netlify

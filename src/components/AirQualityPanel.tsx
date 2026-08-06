@@ -40,30 +40,19 @@ export function AirQualityPanel() {
   useEffect(() => {
     const fetchAirQuality = async () => {
       try {
-        // Open-Meteo Air Quality API - solo parámetros de calidad del aire
-        const airQualityUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${LAT}&longitude=${LON}&current=pm2_5,pm10,ozone,nitrogen_dioxide,sulphur_dioxide&timezone=auto`
+        // Open-Meteo API (gratis, sin API key) - incluye calidad del aire y meteorología
+        const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${LAT}&longitude=${LON}&current=pm2_5,pm10,ozone,nitrogen_dioxide,sulphur_dioxide&forecast_daily=temperature_2m_max,wind_speed_10m_max,relative_humidity_2m&timezone=auto`
         
-        // Open-Meteo Weather API - parámetros meteorológicos (endpoint separado)
-        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m&timezone=auto`
+        const res = await fetch(url)
+        if (!res.ok) throw new Error('No se pudo cargar la calidad del aire')
         
-        const [airRes, weatherRes] = await Promise.all([
-          fetch(airQualityUrl),
-          fetch(weatherUrl)
-        ])
-        
-        if (!airRes.ok) throw new Error('No se pudo cargar la calidad del aire')
-        if (!weatherRes.ok) throw new Error('No se pudo cargar la meteorología')
-        
-        const airJson = await airRes.json()
-        const weatherJson = await weatherRes.json()
-        
-        const airCurrent = airJson.current || {}
-        // Open-Meteo devuelve current_weather con datos actuales
-        const weatherCurrent = weatherJson.current_weather || {}
+        const json = await res.json()
+        const current = json.current || {}
+        const daily = json.daily || {}
         
         // Calcular AQI aproximado basado en PM2.5 (método EPA simplificado)
-        const pm25 = airCurrent.pm2_5 ?? null
-        const pm10 = airCurrent.pm10 ?? null
+        const pm25 = current.pm2_5 ?? null
+        const pm10 = current.pm10 ?? null
         
         let aqi: number | null = null
         if (pm25 !== null) {
@@ -83,10 +72,10 @@ export function AirQualityPanel() {
           aqi,
           aqiCategory: category?.label ?? 'N/A',
           aqiColor: category?.color ?? '#a8a29e',
-          temperature: weatherCurrent.temperature !== null ? Math.round(weatherCurrent.temperature * 10) / 10 : null,
-          windSpeed: weatherCurrent.windspeed ?? null,
-          windDir: weatherCurrent.winddirection ?? null,
-          humidity: null, // hourly data requiere procesamiento adicional
+          temperature: daily.temperature_2m_max?.[0] ?? null,
+          windSpeed: daily.wind_speed_10m_max?.[0] ?? null,
+          windDir: null, // Open-Meteo no devuelve dirección en esta endpoint
+          humidity: daily.relative_humidity_2m?.[0] ?? null,
           lastUpdate: new Date().toISOString(),
         })
       } catch (err) {
