@@ -17,7 +17,6 @@ interface FireMapProps {
   municipalities: Municipality[]
   layers: Record<LayerKey, boolean>
   onReady: () => void
-  isSatellite: boolean
 }
 
 function createFireMarkerElement(kind: 'active' | 'cooled', frp?: number) {
