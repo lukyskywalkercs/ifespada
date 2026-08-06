@@ -1,0 +1,14 @@
+{
+	"servers": {
+		"my-mcp-server-48ccfce8": {
+			"url": "https://deepseek-mcp.tahirl.com/mcp",
+			"type": "http"
+		},
+		"my-mcp-server-3c0a09d9": {
+			"type": "stdio",
+			"command": "npx",
+			"args": []
+		}
+	},
+	"inputs": []
+}

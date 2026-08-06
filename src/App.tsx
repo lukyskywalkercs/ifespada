@@ -184,7 +184,6 @@ export default function App() {
               layers={layers}
               onReady={() => setMapReady(true)}
               onToggleSatellite={() => setIsSatellite(prev => !prev)}
-              isSatellite={isSatellite}
               registerToggle={(toggleFn) => { toggleSatelliteRef.current = toggleFn }}
             />
 

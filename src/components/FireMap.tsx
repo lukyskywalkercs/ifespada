@@ -18,7 +18,6 @@ interface FireMapProps {
   layers: Record<LayerKey, boolean>
   onReady: () => void
   onToggleSatellite?: () => void
-  isSatellite?: boolean
   registerToggle?: (toggleFn: () => void) => void
 }
 
@@ -45,7 +44,7 @@ function makeTownEl(town: Municipality) {
   return el
 }
 
-export function FireMap({ active, cooled, municipalities, layers, onReady, onToggleSatellite, isSatellite, registerToggle }: FireMapProps) {
+export function FireMap({ active, cooled, municipalities, layers, onReady, onToggleSatellite, registerToggle }: FireMapProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapInstance | null>(null)
   const popupRef = useRef<Popup | null>(null)
