@@ -181,8 +181,9 @@ export default function App() {
               layers={layers}
               onReady={() => setMapReady(true)}
             />
+          </section>
 
-            <AirQualityPanel />
+          <AirQualityPanel />
 
             <div className="map-chrome">
               <div className="map-legend" role="group" aria-label="Capas del mapa">
