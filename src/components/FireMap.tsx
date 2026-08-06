@@ -144,6 +144,7 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, onTog
     map.on('load', () => {
       readyRef.current = true
       console.log('[FireMap load] Mapa cargado')
+      onReady()
       
       // FOCOS ACTIVOS
       fireMarkersRef.current.forEach(m => m.remove())
@@ -182,11 +183,29 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, onTog
         townMarkersRef.current.push(new Marker({ element: el, anchor: 'bottom' }).setLngLat([town.lon, town.lat]).addTo(map))
       })
       console.log('[FireMap load] ' + townMarkersRef.current.length + ' municipios creados')
-      onReady()
     })
-    map.on('error', (e) => console.error('Map error:', e.error))
+    
+    // Timeout de seguridad: si el mapa no carga en 5 segundos, llamar onReady de todos modos
+    const timeoutId = setTimeout(() => {
+      if (!readyRef.current) {
+        console.warn('[FireMap] Timeout: forzando onReady después de 5s')
+        readyRef.current = true
+        onReady()
+      }
+    }, 5000)
+    
+    map.on('error', (e) => {
+      console.error('Map error:', e.error)
+      // Si hay error pero el mapa se creó, aún podemos llamar onReady
+      if (!readyRef.current) {
+        readyRef.current = true
+        onReady()
+      }
+    })
+    
     mapRef.current = map
     return () => {
+      clearTimeout(timeoutId)
       ro.disconnect()
       fireMarkersRef.current.forEach(m => m.remove())
       townMarkersRef.current.forEach(m => m.remove())
