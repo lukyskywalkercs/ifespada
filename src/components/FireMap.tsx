@@ -49,6 +49,57 @@ export function FireMap({ active, cooled, municipalities, layers, onReady }: Fir
   const townMarkersRef = useRef<Marker[]>([])
   const fireMarkersRef = useRef<Marker[]>([])
   const readyRef = useRef(false)
+  const isSatelliteRef = useRef(false)
+
+  const toggleBaseLayer = () => {
+    if (!mapRef.current) return
+    isSatelliteRef.current = !isSatelliteRef.current
+    const map = mapRef.current
+    
+    if (isSatelliteRef.current) {
+      // Switch to NASA GIBS False Color (MODIS Bands 7-2-1)
+      map.setStyle({
+        version: 8,
+        sources: {
+          nasa_gibs: {
+            type: 'raster',
+            tiles: [
+              'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_CorrectedReflectance_Bands721/default/{time}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg'
+            ],
+            tileSize: 256,
+            attribution: 'NASA GIBS / MODIS',
+          },
+        },
+        layers: [{ id: 'nasa_gibs', type: 'raster', source: 'nasa_gibs' }],
+      })
+    } else {
+      // Switch back to CartoDB Voyager
+      map.setStyle({
+        version: 8,
+        sources: {
+          carto: {
+            type: 'raster',
+            tiles: [
+              'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
+              'https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
+              'https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
+            ],
+            tileSize: 256,
+            attribution: 'OpenStreetMap CARTO',
+          },
+        },
+        layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
+      })
+    }
+
+    // Re-add markers after style change
+    setTimeout(() => {
+      if (mapRef.current) {
+        townMarkersRef.current.forEach(m => m.addTo(mapRef.current!))
+        fireMarkersRef.current.forEach(m => m.addTo(mapRef.current!))
+      }
+    }, 1000)
+  }
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
@@ -76,6 +127,15 @@ export function FireMap({ active, cooled, municipalities, layers, onReady }: Fir
       attributionControl: { compact: true },
     })
     map.addControl(new NavigationControl({ showCompass: false }), 'bottom-right')
+    
+    // Add custom toggle button
+    const toggleBtn = document.createElement('button')
+    toggleBtn.className = 'maplibregl-ctrl maplibregl-ctrl-group'
+    toggleBtn.innerHTML = '<span style="font-size: 1.2rem;">🛰️</span>'
+    toggleBtn.title = 'Cambiar a Vista Satelital (Falso Color)'
+    toggleBtn.onclick = toggleBaseLayer
+    map.addControl({ onAdd: () => toggleBtn, onRemove: () => {} }, 'top-left')
+
     popupRef.current = new MapLibrePopup({ closeButton: false, closeOnClick: true, offset: 18, maxWidth: '280px' })
     const ro = new ResizeObserver(() => map.resize())
     ro.observe(containerRef.current)
