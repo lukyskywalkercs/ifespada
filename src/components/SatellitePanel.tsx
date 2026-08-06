@@ -25,7 +25,7 @@ export function SatellitePanel({ isSatellite, onToggle }: SatellitePanelProps) {
       >
         <div className="satellite-panel__title">
           <span className="satellite-panel__icon">🛰️</span>
-          <span>{isSatellite ? 'Vista Satelital' : 'Vista Mapa'}</span>
+          <span>{isSatellite ? 'Vista Infrarroja' : 'Vista Mapa'}</span>
         </div>
         <span className="satellite-panel__chevron">
           {expanded ? '‹' : '›'}
@@ -36,8 +36,8 @@ export function SatellitePanel({ isSatellite, onToggle }: SatellitePanelProps) {
         <div className="satellite-panel__content">
           <p className="satellite-panel__desc">
             {isSatellite 
-              ? 'Imatge satel·lital de la NASA (MODIS True Color). Actualitzada diàriament.'
-              : 'Mapa base CartoDB Voyager. Fes clic per veure la vista satel·lital.'}
+              ? 'Capa satelital de la NASA con realce infrarrojo para resaltar calor y vegetación.'
+              : 'Mapa base CartoDB Voyager. Pulsa para activar la capa infrarroja.'}
           </p>
           <div className="satellite-panel__info">
             <div className="satellite-panel__metric">

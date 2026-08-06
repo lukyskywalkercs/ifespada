@@ -17,8 +17,7 @@ interface FireMapProps {
   municipalities: Municipality[]
   layers: Record<LayerKey, boolean>
   onReady: () => void
-  onToggleSatellite?: () => void
-  registerToggle?: (toggleFn: () => void) => void
+  isSatellite: boolean
 }
 
 function createFireMarkerElement(kind: 'active' | 'cooled', frp?: number) {
@@ -44,7 +43,7 @@ function makeTownEl(town: Municipality) {
   return el
 }
 
-export function FireMap({ active, cooled, municipalities, layers, onReady, onToggleSatellite, registerToggle }: FireMapProps) {
+export function FireMap({ active, cooled, municipalities, layers, onReady, isSatellite }: FireMapProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapInstance | null>(null)
   const popupRef = useRef<Popup | null>(null)
@@ -53,20 +52,9 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, onTog
   const readyRef = useRef(false)
   const isSatelliteRef = useRef(false)
 
-  const toggleBaseLayer = () => {
-    // Registrar la funció de toggle perquè pugui ser cridada des de SatellitePanel
-    if (registerToggle) {
-      registerToggle(toggleBaseLayer)
-    }
-
-    if (!mapRef.current) return
-    isSatelliteRef.current = !isSatelliteRef.current
-    onToggleSatellite?.()
-    const map = mapRef.current
-    
-    if (isSatelliteRef.current) {
-      // Switch to NASA GIBS (MODIS Corrected Reflectance Bands 7-2-1) for fire detection
-      const today = new Date().toISOString().split('T')[0]
+  const updateBaseLayer = (map: MapInstance, satellite: boolean) => {
+    const today = new Date().toISOString().split('T')[0]
+    if (satellite) {
       map.setStyle({
         version: 8,
         sources: {
@@ -82,7 +70,6 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, onTog
         layers: [{ id: 'nasa_gibs', type: 'raster', source: 'nasa_gibs' }],
       })
     } else {
-      // Switch back to CartoDB Voyager
       map.setStyle({
         version: 8,
         sources: {
@@ -114,22 +101,37 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, onTog
     if (!containerRef.current || mapRef.current) return
     const map = new MapLibreMap({
       container: containerRef.current,
-      style: {
-        version: 8,
-        sources: {
-          carto: {
-            type: 'raster',
-            tiles: [
-              'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-              'https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-              'https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-            ],
-            tileSize: 256,
-            attribution: 'OpenStreetMap CARTO',
+      style: isSatellite
+        ? {
+            version: 8,
+            sources: {
+              nasa_gibs: {
+                type: 'raster',
+                tiles: [
+                  `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_CorrectedReflectance_Bands721/default/${new Date().toISOString().split('T')[0]}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg`
+                ],
+                tileSize: 256,
+                attribution: 'NASA GIBS / MODIS',
+              },
+            },
+            layers: [{ id: 'nasa_gibs', type: 'raster', source: 'nasa_gibs' }],
+          }
+        : {
+            version: 8,
+            sources: {
+              carto: {
+                type: 'raster',
+                tiles: [
+                  'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
+                  'https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
+                  'https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
+                ],
+                tileSize: 256,
+                attribution: 'OpenStreetMap CARTO',
+              },
+            },
+            layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
           },
-        },
-        layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
-      },
       center: [-0.28, 39.88],
       zoom: 10.45,
       maxBounds: [[-0.85, 39.45], [0.25, 40.35]],
@@ -143,8 +145,8 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, onTog
 
     map.on('load', () => {
       readyRef.current = true
+      isSatelliteRef.current = isSatellite
       console.log('[FireMap load] Mapa cargado')
-      onReady()
       
       // FOCOS ACTIVOS
       fireMarkersRef.current.forEach(m => m.remove())
@@ -183,29 +185,11 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, onTog
         townMarkersRef.current.push(new Marker({ element: el, anchor: 'bottom' }).setLngLat([town.lon, town.lat]).addTo(map))
       })
       console.log('[FireMap load] ' + townMarkersRef.current.length + ' municipios creados')
+      onReady()
     })
-    
-    // Timeout de seguridad: si el mapa no carga en 5 segundos, llamar onReady de todos modos
-    const timeoutId = setTimeout(() => {
-      if (!readyRef.current) {
-        console.warn('[FireMap] Timeout: forzando onReady después de 5s')
-        readyRef.current = true
-        onReady()
-      }
-    }, 5000)
-    
-    map.on('error', (e) => {
-      console.error('Map error:', e.error)
-      // Si hay error pero el mapa se creó, aún podemos llamar onReady
-      if (!readyRef.current) {
-        readyRef.current = true
-        onReady()
-      }
-    })
-    
+    map.on('error', (e) => console.error('Map error:', e.error))
     mapRef.current = map
     return () => {
-      clearTimeout(timeoutId)
       ro.disconnect()
       fireMarkersRef.current.forEach(m => m.remove())
       townMarkersRef.current.forEach(m => m.remove())
@@ -214,7 +198,15 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, onTog
       mapRef.current = null
       readyRef.current = false
     }
-  }, [onReady])
+  }, [onReady, isSatellite])
+
+  // Actualizar base layer al cambiar la vista
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !readyRef.current) return
+    isSatelliteRef.current = isSatellite
+    updateBaseLayer(map, isSatellite)
+  }, [isSatellite])
 
   // Actualizar focos cuando cambien layers
   useEffect(() => {
@@ -255,12 +247,17 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, onTog
     townMarkersRef.current.forEach(m => m.remove())
     townMarkersRef.current = []
     municipalities.forEach(town => {
-      const visible = (town.status === 'confined' && layers.confined) || (town.status === 'evacuated' && layers.evacuated)
+      const visible = (town.status === 'confined' && layers.confined) || 
+                     (town.status === 'evacuated' && layers.evacuated) ||
+                     (town.status === 'returning_home' && layers.confined)
       if (!visible) return
       const el = makeTownEl(town)
       el.addEventListener('click', (ev) => {
         ev.stopPropagation()
-        const title = town.status === 'confined' ? 'Municipio confinado' : 'Nucleo evacuado'
+        let title = ''
+        if (town.status === 'confined') title = 'Municipio confinado'
+        else if (town.status === 'evacuated') title = 'Nucleo evacuado'
+        else if (town.status === 'returning_home') title = 'Retornando a casa'
         popupRef.current?.setLngLat([town.lon, town.lat]).setHTML('<div class="popup"><h3>' + town.name + '</h3><p>' + title + '</p></div>').addTo(map)
       })
       townMarkersRef.current.push(new Marker({ element: el, anchor: 'bottom' }).setLngLat([town.lon, town.lat]).addTo(map))
