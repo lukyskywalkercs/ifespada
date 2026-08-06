@@ -39,9 +39,9 @@
   "_datos_incendio": {
     "hectareas": 9568,
     "perimetro_km": 89,
-    "estado": "Estabilizado",
-    "efectivos": "Dimensionados según necesidades",
-    "medios_aereos": "En reducción progresiva"
+    "estado": "Controlado",
+    "efectivos": "En fase de vigilancia y remate",
+    "medios_aereos": "Retirada progresiva"
   },
   
   "_notas_adicionales": {

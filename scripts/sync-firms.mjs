@@ -205,7 +205,7 @@ async function main() {
       started: '2026-07-25T11:00:00+02:00',
       hectares: 9568,
       perimeterKm: 89,
-      status: 'Estabilizado',
+      status: 'Controlado',
       confinedPeople: 0,
       evacuatedPeople: 0,
       aerialMeans: 0,
