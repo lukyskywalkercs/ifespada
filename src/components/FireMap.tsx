@@ -65,7 +65,7 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, onTog
     const map = mapRef.current
     
     if (isSatelliteRef.current) {
-      // Switch to NASA GIBS True Color (MODIS Corrected Reflectance)
+      // Switch to NASA GIBS (MODIS Corrected Reflectance Bands 7-2-1) for fire detection
       const today = new Date().toISOString().split('T')[0]
       map.setStyle({
         version: 8,
@@ -73,7 +73,7 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, onTog
           nasa_gibs: {
             type: 'raster',
             tiles: [
-              `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_CorrectedReflectance_TrueColor/default/${today}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg`
+              `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_CorrectedReflectance_Bands721/default/${today}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg`
             ],
             tileSize: 256,
             attribution: 'NASA GIBS / MODIS',
