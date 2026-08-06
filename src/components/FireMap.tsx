@@ -17,6 +17,9 @@ interface FireMapProps {
   municipalities: Municipality[]
   layers: Record<LayerKey, boolean>
   onReady: () => void
+  onToggleSatellite?: () => void
+  isSatellite?: boolean
+  registerToggle?: (toggleFn: () => void) => void
 }
 
 function createFireMarkerElement(kind: 'active' | 'cooled', frp?: number) {
@@ -42,7 +45,7 @@ function makeTownEl(town: Municipality) {
   return el
 }
 
-export function FireMap({ active, cooled, municipalities, layers, onReady }: FireMapProps) {
+export function FireMap({ active, cooled, municipalities, layers, onReady, onToggleSatellite, isSatellite, registerToggle }: FireMapProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapInstance | null>(null)
   const popupRef = useRef<Popup | null>(null)
@@ -52,8 +55,14 @@ export function FireMap({ active, cooled, municipalities, layers, onReady }: Fir
   const isSatelliteRef = useRef(false)
 
   const toggleBaseLayer = () => {
+    // Registrar la funció de toggle perquè pugui ser cridada des de SatellitePanel
+    if (registerToggle) {
+      registerToggle(toggleBaseLayer)
+    }
+
     if (!mapRef.current) return
     isSatelliteRef.current = !isSatelliteRef.current
+    onToggleSatellite?.()
     const map = mapRef.current
     
     if (isSatelliteRef.current) {
@@ -128,14 +137,6 @@ export function FireMap({ active, cooled, municipalities, layers, onReady }: Fir
       attributionControl: { compact: true },
     })
     map.addControl(new NavigationControl({ showCompass: false }), 'bottom-right')
-    
-    // Add custom toggle button
-    const toggleBtn = document.createElement('button')
-    toggleBtn.className = 'maplibregl-ctrl maplibregl-ctrl-group satellite-toggle-btn'
-    toggleBtn.innerHTML = '<span class="satellite-toggle__icon">🛰️</span><span class="satellite-toggle__text">Satélite</span>'
-    toggleBtn.title = 'Cambiar entre vista de mapa y vista satelital (falso color infrarrojo)'
-    toggleBtn.onclick = toggleBaseLayer
-    map.addControl({ onAdd: () => toggleBtn, onRemove: () => {} }, 'bottom-right')
 
     popupRef.current = new MapLibrePopup({ closeButton: false, closeOnClick: true, offset: 18, maxWidth: '280px' })
     const ro = new ResizeObserver(() => map.resize())

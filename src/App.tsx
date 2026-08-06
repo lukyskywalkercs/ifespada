@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { FireMap } from './components/FireMap'
 import { AirQualityPanel } from './components/AirQualityPanel'
+import { SatellitePanel } from './components/SatellitePanel'
 import {
   fetchLiveSnapshot,
   formatNumber,
@@ -63,6 +64,8 @@ export default function App() {
     confined: true,
     evacuated: true,
   })
+  const [isSatellite, setIsSatellite] = useState(false)
+  const toggleSatelliteRef = useRef<() => void>(() => {})
 
   const applyLive = useCallback(async (base: FirePayload) => {
     console.log('[App.tsx] applyLive - Iniciando carga de datos FIRMS en vivo')
@@ -180,6 +183,14 @@ export default function App() {
               municipalities={data.municipalities}
               layers={layers}
               onReady={() => setMapReady(true)}
+              onToggleSatellite={() => setIsSatellite(prev => !prev)}
+              isSatellite={isSatellite}
+              registerToggle={(toggleFn) => { toggleSatelliteRef.current = toggleFn }}
+            />
+
+            <SatellitePanel
+              isSatellite={isSatellite}
+              onToggle={() => toggleSatelliteRef.current()}
             />
 
             <AirQualityPanel />
