@@ -6,6 +6,7 @@ import {
   Popup as MapLibrePopup,
   type Map as MapInstance,
   type Popup,
+  type StyleSpecification,
 } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { Detection, LayerKey, Municipality } from '../types'
@@ -38,7 +39,8 @@ function makeTownEl(town: Municipality) {
   const el = document.createElement('button')
   el.type = 'button'
   el.className = 'town-marker town-marker--' + town.status
-  el.setAttribute('aria-label', town.name + ', ' + (town.status === 'confined' ? 'confinado' : 'evacuado'))
+  const statusLabel = town.status === 'confined' ? 'confinado' : town.status === 'evacuated' ? 'evacuado' : 'retornando a casa'
+  el.setAttribute('aria-label', town.name + ', ' + statusLabel)
   el.innerHTML = '<span class="town-marker__dot"></span><span class="town-marker__name">' + town.name + '</span>'
   return el
 }
@@ -52,86 +54,60 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, isSat
   const readyRef = useRef(false)
   const isSatelliteRef = useRef(false)
 
-  const updateBaseLayer = (map: MapInstance, satellite: boolean) => {
-    const today = new Date().toISOString().split('T')[0]
+  const GIBS_TILE_URL = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_CorrectedReflectance_Bands367/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpeg'
+
+  const getBaseStyle = (satellite: boolean): StyleSpecification => {
     if (satellite) {
-      map.setStyle({
-        version: 8,
+      return {
+        version: 8 as const,
         sources: {
           nasa_gibs: {
             type: 'raster',
-            tiles: [
-              `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_CorrectedReflectance_Bands721/default/${today}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg`
-            ],
+            tiles: [GIBS_TILE_URL],
             tileSize: 256,
             attribution: 'NASA GIBS / MODIS',
           },
         },
         layers: [{ id: 'nasa_gibs', type: 'raster', source: 'nasa_gibs' }],
-      })
-    } else {
-      map.setStyle({
-        version: 8,
-        sources: {
-          carto: {
-            type: 'raster',
-            tiles: [
-              'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-              'https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-              'https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-            ],
-            tileSize: 256,
-            attribution: 'OpenStreetMap CARTO',
-          },
-        },
-        layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
-      })
+      }
     }
 
-    // Re-add markers after style change
-    setTimeout(() => {
-      if (mapRef.current) {
-        townMarkersRef.current.forEach(m => m.addTo(mapRef.current!))
-        fireMarkersRef.current.forEach(m => m.addTo(mapRef.current!))
-      }
-    }, 1000)
+    return {
+      version: 8 as const,
+      sources: {
+        carto: {
+          type: 'raster',
+          tiles: [
+            'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
+            'https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
+            'https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
+          ],
+          tileSize: 256,
+          attribution: 'OpenStreetMap CARTO',
+        },
+      },
+      layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
+    }
+  }
+
+  const updateBaseLayer = (map: MapInstance, satellite: boolean) => {
+    townMarkersRef.current.forEach((marker) => marker.remove())
+    fireMarkersRef.current.forEach((marker) => marker.remove())
+
+    map.once('styledata', () => {
+      if (!mapRef.current) return
+      townMarkersRef.current.forEach((marker) => marker.addTo(mapRef.current!))
+      fireMarkersRef.current.forEach((marker) => marker.addTo(mapRef.current!))
+    })
+
+    map.setStyle(getBaseStyle(satellite))
   }
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
     const map = new MapLibreMap({
       container: containerRef.current,
-      style: isSatellite
-        ? {
-            version: 8,
-            sources: {
-              nasa_gibs: {
-                type: 'raster',
-                tiles: [
-                  `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_CorrectedReflectance_Bands721/default/${new Date().toISOString().split('T')[0]}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg`
-                ],
-                tileSize: 256,
-                attribution: 'NASA GIBS / MODIS',
-              },
-            },
-            layers: [{ id: 'nasa_gibs', type: 'raster', source: 'nasa_gibs' }],
-          }
-        : {
-            version: 8,
-            sources: {
-              carto: {
-                type: 'raster',
-                tiles: [
-                  'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-                  'https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-                  'https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-                ],
-                tileSize: 256,
-                attribution: 'OpenStreetMap CARTO',
-              },
-            },
-            layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
-          },
+      style: getBaseStyle(isSatellite),
       center: [-0.28, 39.88],
       zoom: 10.45,
       maxBounds: [[-0.85, 39.45], [0.25, 40.35]],
@@ -174,12 +150,18 @@ export function FireMap({ active, cooled, municipalities, layers, onReady, isSat
       townMarkersRef.current.forEach(m => m.remove())
       townMarkersRef.current = []
       municipalities.forEach(town => {
-        const visible = (town.status === 'confined' && layers.confined) || (town.status === 'evacuated' && layers.evacuated)
+        const visible =
+          (town.status === 'confined' && layers.confined) ||
+          (town.status === 'evacuated' && layers.evacuated) ||
+          (town.status === 'returning_home' && layers.confined)
         if (!visible) return
         const el = makeTownEl(town)
         el.addEventListener('click', (ev) => {
           ev.stopPropagation()
-          const title = town.status === 'confined' ? 'Municipio confinado' : 'Nucleo evacuado'
+          let title = ''
+          if (town.status === 'confined') title = 'Municipio confinado'
+          else if (town.status === 'evacuated') title = 'Núcleo evacuado'
+          else if (town.status === 'returning_home') title = 'Retornando a casa'
           popupRef.current?.setLngLat([town.lon, town.lat]).setHTML('<div class="popup"><h3>' + town.name + '</h3><p>' + title + '</p></div>').addTo(map)
         })
         townMarkersRef.current.push(new Marker({ element: el, anchor: 'bottom' }).setLngLat([town.lon, town.lat]).addTo(map))
