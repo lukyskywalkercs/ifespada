@@ -133,17 +133,9 @@ async function main() {
   }
 
   const active = dedupe(activeRaw)
-  const activeKeys = new Set(active.map((d) => `${d.lat.toFixed(3)}|${d.lon.toFixed(3)}`))
 
+  // Solo mostramos focos activos (últimas 24h). No histórico.
   const cooled = []
-  const cooledSeen = new Set()
-  for (const d of weekRaw) {
-    if (d.acq_date < '2026-07-25') continue
-    const k = `${d.lat.toFixed(3)}|${d.lon.toFixed(3)}`
-    if (activeKeys.has(k) || cooledSeen.has(k)) continue
-    cooledSeen.add(k)
-    cooled.push(d)
-  }
 
   // Cargar municipios desde archivo JSON (actualización manual)
   let municipios = []
