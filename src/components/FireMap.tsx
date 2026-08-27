@@ -57,16 +57,16 @@ export function FireMap({ active, cooled, municipalities, layers, onReady }: Fir
       style: {
         version: 8,
         sources: {
-          'carto-light': {
+          'test-map': {
             type: 'raster',
             tiles: [
-              'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+              'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
             ],
             tileSize: 256,
-            attribution: '&copy; OpenStreetMap &copy; CARTO',
+            attribution: 'Esri Topo',
           },
         },
-        layers: [{ id: 'carto-light', type: 'raster', source: 'carto-light' }],
+        layers: [{ id: 'test-map', type: 'raster', source: 'test-map' }],
       },
       center: [-0.28, 39.88],
       zoom: 10.45,
