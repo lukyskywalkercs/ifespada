@@ -57,22 +57,22 @@ export function FireMap({ active, cooled, municipalities, layers, onReady }: Fir
       style: {
         version: 8,
         sources: {
-          carto: {
+          'osm-standard': {
             type: 'raster',
             tiles: [
-              'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-              'https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
-              'https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
+              'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
             ],
             tileSize: 256,
-            attribution: 'OpenStreetMap CARTO',
+            attribution: '&copy; OpenStreetMap contributors',
           },
         },
-        layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
+        layers: [{ id: 'osm-standard', type: 'raster', source: 'osm-standard' }],
       },
       center: [-0.28, 39.88],
       zoom: 10.45,
-      maxBounds: [[-0.85, 39.45], [0.25, 40.35]],
+      maxBounds: [[-1.0, 39.4], [0.5, 40.4]],
       attributionControl: { compact: true },
     })
     map.addControl(new NavigationControl({ showCompass: false }), 'bottom-right')
