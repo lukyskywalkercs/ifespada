@@ -205,7 +205,7 @@ async function main() {
       started: '2026-07-25T11:00:00+02:00',
       hectares: 8500,
       perimeterKm: 72,
-      status: 'Activo — ni estabilizado ni controlado',
+      status: 'Controlado - No extinguido',
       confinedPeople: confinedPeople !== undefined ? confinedPeople : 64000,
       evacuatedPeople: evacuatedPeople !== undefined ? evacuatedPeople : 16000,
       aerialMeans: 30,
