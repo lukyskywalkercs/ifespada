@@ -57,18 +57,16 @@ export function FireMap({ active, cooled, municipalities, layers, onReady }: Fir
       style: {
         version: 8,
         sources: {
-          'osm-standard': {
+          'carto-voyager': {
             type: 'raster',
             tiles: [
-              'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-              'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
-              'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',
             ],
             tileSize: 256,
-            attribution: '&copy; OpenStreetMap contributors',
+            attribution: '&copy; OpenStreetMap &copy; CARTO',
           },
         },
-        layers: [{ id: 'osm-standard', type: 'raster', source: 'osm-standard' }],
+        layers: [{ id: 'carto-voyager', type: 'raster', source: 'carto-voyager' }],
       },
       center: [-0.28, 39.88],
       zoom: 10.45,
