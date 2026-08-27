@@ -57,20 +57,20 @@ export function FireMap({ active, cooled, municipalities, layers, onReady }: Fir
       style: {
         version: 8,
         sources: {
-          'carto-voyager': {
+          'carto-light': {
             type: 'raster',
             tiles: [
-              'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',
+              'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
             ],
             tileSize: 256,
             attribution: '&copy; OpenStreetMap &copy; CARTO',
           },
         },
-        layers: [{ id: 'carto-voyager', type: 'raster', source: 'carto-voyager' }],
+        layers: [{ id: 'carto-light', type: 'raster', source: 'carto-light' }],
       },
       center: [-0.28, 39.88],
       zoom: 10.45,
-      maxBounds: [[-1.0, 39.4], [0.5, 40.4]],
+      maxBounds: [[-0.55, 39.7], [-0.1, 40.05]],
       attributionControl: { compact: true },
     })
     map.addControl(new NavigationControl({ showCompass: false }), 'bottom-right')
