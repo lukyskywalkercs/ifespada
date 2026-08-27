@@ -679,34 +679,3 @@
     }
   }
 }
-
-/* Botón de toggle satelital */
-.satellite-toggle-btn {
-  display: flex !important;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px !important;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink);
-  background: var(--paper-elevated);
-  border: 1px solid var(--stroke);
-  backdrop-filter: blur(18px) saturate(1.2);
-  box-shadow: var(--shadow-float);
-  cursor: pointer;
-  transition: all 0.2s var(--ease-out);
-}
-
-.satellite-toggle-btn:hover {
-  background: rgba(28, 25, 23, 0.08);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.satellite-toggle__icon {
-  font-size: 16px;
-}
-
-.satellite-toggle__text {
-  white-space: nowrap;
-}

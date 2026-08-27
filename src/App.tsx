@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import { FireMap } from './components/FireMap'
-import { AirQualityPanel } from './components/AirQualityPanel'
-import { SatellitePanel } from './components/SatellitePanel'
 import {
   fetchLiveSnapshot,
   formatNumber,
@@ -57,7 +55,6 @@ export default function App() {
   const [refreshing, setRefreshing] = useState(false)
   const [liveOk, setLiveOk] = useState(false)
   const [latestPass, setLatestPass] = useState<string | null>(null)
-  const [isSatellite, setIsSatellite] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [layers, setLayers] = useState<Record<LayerKey, boolean>>({
     active: true,
@@ -181,16 +178,8 @@ export default function App() {
               cooled={data.cooled}
               municipalities={data.municipalities}
               layers={layers}
-              isSatellite={isSatellite}
               onReady={() => setMapReady(true)}
             />
-
-            <SatellitePanel
-              isSatellite={isSatellite}
-              onToggle={() => setIsSatellite((prev) => !prev)}
-            />
-
-            <AirQualityPanel />
 
             <div className="map-chrome">
               <div className="map-legend" role="group" aria-label="Capas del mapa">
@@ -253,7 +242,7 @@ export default function App() {
                   </div>
                   {latestPass && (
                     <div>
-                      <dt>Última detección satelital disponible</dt>
+                      <dt>Última pasada</dt>
                       <dd>{formatPass(latestPass)}</dd>
                     </div>
                   )}

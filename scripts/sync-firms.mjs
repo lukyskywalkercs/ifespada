@@ -6,10 +6,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
 const outDir = join(root, 'public', 'data')
 
-const WEST = -0.55
-const EAST = -0.05
-const SOUTH = 39.7
-const NORTH = 40.05
+const WEST = -1.0      // Ampliado hacia oeste (más provincia Castellón)
+const EAST = 0.5       // Ampliado hacia este (litoral)
+const SOUTH = 39.4     // Ampliado hacia sur (más interior)
+const NORTH = 40.4     // Ampliado hacia norte (más zona norte)
 
 const SOURCES = [
   {
@@ -203,13 +203,13 @@ async function main() {
     incident: {
       name: "Incendio Serra d'Espadà · Vall d'Uixó",
       started: '2026-07-25T11:00:00+02:00',
-      hectares: 9568,
-      perimeterKm: 89,
-      status: 'Controlado',
-      confinedPeople: 0,
-      evacuatedPeople: 0,
-      aerialMeans: 0,
-      groundCrew: 0,
+      hectares: 8500,
+      perimeterKm: 72,
+      status: 'Activo — ni estabilizado ni controlado',
+      confinedPeople: confinedPeople !== undefined ? confinedPeople : 64000,
+      evacuatedPeople: evacuatedPeople !== undefined ? evacuatedPeople : 16000,
+      aerialMeans: 30,
+      groundCrew: 450,
     },
     bbox: [WEST, SOUTH, EAST, NORTH],
     active,

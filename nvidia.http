@@ -1,0 +1,14 @@
+POST https://integrate.api.nvidia.com/v1/chat/completions
+Content-Type: application/json
+Authorization: Bearer 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
+
+{
+  "model": "meta/llama-3.3-70b-instruct",
+  "messages": [
+    {"role": "user", "content": "Escribe una función en Python que invierta una cadena"}
+  ],
+  "temperature": 0.2,
+  "top_p": 0.7,
+  "max_tokens": 1024,
+  "stream": false
+}

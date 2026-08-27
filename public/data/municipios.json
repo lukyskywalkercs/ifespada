@@ -1,103 +1,38 @@
 {
-  "_instrucciones": "Actualizar manualmente con datos oficiales del Cecopi/Generalitat. Formato: status = 'confined', 'evacuated' o 'returning_home'",
-  "_fuente_oficial": "CECOPI Puesto de Mando Avanzado - Comunicado 31 julio 2026 17:00h",
-  "_ultima_actualizacion": "2026-07-31 17:00h - INCENDIO ESTABILIZADO. Levantadas TODAS las evacuaciones. Artana y Eslida retornan. Sin confinamientos ni evacuaciones activas",
+  "_instrucciones": "Actualizar manualmente con datos oficiales del Cecopi/Generalitat. Formato: status = 'confined' o 'evacuated'",
+  "_fuente_oficial": "CECOPi Generalitat Valenciana - Nota de prensa última hora",
+  "_ultima_actualizacion": "2026-07-29 - 15 núcleos desalojados + 3 desconfinados parciales",
   
   "municipios": [
-    { "name": "Aín", "status": "returning_home", "lat": 39.8503, "lon": -0.3614, "nota": "Retorna - sin orden de evacuación activa" },
-    { "name": "Alcudia de Veo", "status": "returning_home", "lat": 39.8369, "lon": -0.3069, "nota": "Retorna - sin orden de evacuación activa (incluidas pedanías de Veo y Benitandus)" },
-    { "name": "Alfondeguilla", "status": "returning_home", "lat": 39.8336, "lon": -0.3469, "nota": "Retorna - sin orden de evacuación activa" },
-    { "name": "Tales", "status": "returning_home", "lat": 39.8711, "lon": -0.2903, "nota": "Retorna - sin orden de evacuación activa" },
-    { "name": "Eslida", "status": "returning_home", "lat": 39.8436, "lon": -0.3253, "nota": "Levantada evacuación 31 julio 17:00h - retornan" },
-    { "name": "Artana", "status": "returning_home", "lat": 39.8836, "lon": -0.2736, "nota": "Levantada evacuación 31 julio 17:00h - retornan. Municipio más afectado: 3160 ha quemadas" },
-    { "name": "Suera", "status": "returning_home", "lat": 39.8211, "lon": -0.3336, "nota": "Alzamiento evacuación - retornan hoy 31 julio" },
-    { "name": "Villamalur", "status": "returning_home", "lat": 39.8586, "lon": -0.3203, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
-    { "name": "Torralba del Pinar", "status": "returning_home", "lat": 39.8461, "lon": -0.3469, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
-    { "name": "Ayódar", "status": "returning_home", "lat": 39.8586, "lon": -0.3069, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
-    { "name": "Fuentes de Ayódar", "status": "returning_home", "lat": 39.8711, "lon": -0.3336, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
-    { "name": "Chóvar", "status": "returning_home", "lat": 39.8886, "lon": -0.4114, "nota": "Alzamiento evacuación - retornan hoy 31 julio" },
-    { "name": "Azuébar", "status": "returning_home", "lat": 39.8714, "lon": -0.3864, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
-    { "name": "Almedíjar", "status": "returning_home", "lat": 39.8836, "lon": -0.4003, "nota": "Retorna hoy 31 julio - no afectado por el fuego" },
-    { "name": "Artesa (pedanía de Onda)", "status": "returning_home", "lat": 39.9211, "lon": -0.2236, "nota": "Retorna - sin orden de evacuación activa" },
-    { "name": "Solaig (Betxí)", "status": "returning_home", "lat": 39.8950, "lon": -0.2650, "nota": "Retorna - sin orden de evacuación activa" },
-    { "name": "Montserrat (Betxí)", "status": "returning_home", "lat": 39.8970, "lon": -0.2680, "nota": "Retorna - sin orden de evacuación activa" },
-    { "name": "Peña Negra (Betxí)", "status": "returning_home", "lat": 39.8990, "lon": -0.2700, "nota": "Retorna - sin orden de evacuación activa" },
-    { "name": "Nova Onda (Onda)", "status": "returning_home", "lat": 39.9100, "lon": -0.2400, "nota": "Confinamiento finalizado 30 julio - retornan hoy 31 julio" }
+    { "name": "Aín", "status": "evacuated", "lat": 39.8503, "lon": -0.3614, "nota": "Desalojo total" },
+    { "name": "Alcudia de Veo", "status": "evacuated", "lat": 39.8369, "lon": -0.3069, "nota": "Desalojo total" },
+    { "name": "Alfondeguilla", "status": "evacuated", "lat": 39.8336, "lon": -0.3469, "nota": "Desalojo total" },
+    { "name": "Tales", "status": "evacuated", "lat": 39.8711, "lon": -0.2903, "nota": "Desalojo total" },
+    { "name": "Eslida", "status": "evacuated", "lat": 39.8436, "lon": -0.3253, "nota": "Desalojo total" },
+    { "name": "Artana", "status": "evacuated", "lat": 39.8836, "lon": -0.2736, "nota": "Desalojo total" },
+    { "name": "Suera", "status": "evacuated", "lat": 39.8211, "lon": -0.3336, "nota": "Desalojo total" },
+    { "name": "Villamalur", "status": "evacuated", "lat": 39.8586, "lon": -0.3203, "nota": "Desalojo total" },
+    { "name": "Torralba", "status": "evacuated", "lat": 39.8461, "lon": -0.3469, "nota": "Desalojo total" },
+    { "name": "Ayódar", "status": "evacuated", "lat": 39.8586, "lon": -0.3069, "nota": "Desalojo total" },
+    { "name": "Fuentes de Ayódar", "status": "evacuated", "lat": 39.8711, "lon": -0.3336, "nota": "Desalojo total" },
+    { "name": "Chóvar", "status": "evacuated", "lat": 39.8886, "lon": -0.4114, "nota": "Desalojo total" },
+    { "name": "Azuébar", "status": "evacuated", "lat": 39.8714, "lon": -0.3864, "nota": "Desalojo total" },
+    { "name": "Almedíjar", "status": "evacuated", "lat": 39.8836, "lon": -0.4003, "nota": "Desalojo total" },
+    { "name": "Artesa (pedanía de Onda)", "status": "evacuated", "lat": 39.9211, "lon": -0.2236, "nota": "Pedanía desalojada" }
   ],
   
   "_total_confinados": 0,
-  "_total_controlados": 0,
-  "_total_retornan_hoy": 19,
-  "_total_evacuados_pendientes": 0,
+  "_total_evacuados": 15,
   "_personas_afectadas_estimadas": {
     "confinadas": 0,
-    "controladas": 0,
-    "retornan_hoy": 9500,
-    "evacuadas_pendientes": 0
-  },
-  
-  "_datos_incendio": {
-    "hectareas": 9568,
-    "perimetro_km": 89,
-    "estado": "Controlado",
-    "efectivos": "En fase de vigilancia y remate",
-    "medios_aereos": "Retirada progresiva"
+    "evacuadas": 8500
   },
   
   "_notas_adicionales": {
-    "vigencia_medidas": "Actualizado 31 julio 2026 17:00h - CECOPI PMA - SIN EVACUACIONES NI CONFINAMIENTOS ACTIVOS",
-    "estado_incendio": "Estabilizado - equipos continúan labores de extinción",
-    "levantadas_todas_evacuaciones": true,
-    "ultimos_levantamientos": ["Artana", "Eslida"],
-    "mantienen_evacuacion": [],
-    "zonas_controladas": [
-      "Alcudia de Veo (incluida pedanía de Veo)",
-      "Benitandus",
-      "Tales"
-    ],
-    "retornan_hoy_31_julio": [
-      "Villamalur",
-      "Torralba del Pinar",
-      "Ayódar",
-      "Fuentes de Ayódar",
-      "Azuébar",
-      "Almedíjar",
-      "Alfondeguilla",
-      "Suera",
-      "Chóvar",
-      "Nova Onda (Onda)"
-    ],
-    "evacuados_pendientes": [
-      "Artana", "Eslida", "Aín", "Alcudia de Veo (Veo, Benitandus)", "Tales",
-      "Urbanizaciones Solaig, Montserrat y Peña Negra (Betxí)",
-      "Pedanía de Artesa (Onda)"
-    ],
-    "recomendaciones": [
-      "Restringir desplazamientos a la zona del incendio - solo traslados estrictamente necesarios",
-      "No hacer uso de áreas y espacios recreativos en el perímetro o alrededores del área incendiada",
-      "Aplazar práctica de actividades deportivas o lúdicas al aire libre hasta que el incendio esté completamente extinguido",
-      "La ausencia de tráfico favorece la recuperación de la masa forestal y evita riesgos por desprendimientos",
-      "Informarse solo a través de canales oficiales",
-      "Seguir indicaciones de Fuerzas y Cuerpos de Seguridad del Estado"
-    ],
-    "convoyes_mascotas": "No necesario - todas las evacuaciones levantadas",
-    "realojamientos": {
-      "uji_castellon": "Residencia de estudiantes UJI",
-      "penyeta_roja": "Centro Penyeta Roja",
-      "balneario_vilavella": "Balneario de La Vilavella",
-      "seminario_segorbe": 128,
-      "moncofa": 45,
-      "total_realojados": 149
-    },
-    "municipios_evacuados_lista": [],
-    "todos_municipios_retornan": [
-      "Artana", "Eslida", "Aín", "Alcudia de Veo (con Veo y Benitandus)", "Tales",
-      "Alfondeguilla", "Suera", "Chóvar", "Villamalur", "Torralba del Pinar",
-      "Ayódar", "Fuentes de Ayódar", "Azuébar", "Almedíjar", "Nova Onda (Onda)",
-      "Urbanizaciones Solaig, Montserrat y Peña Negra (Betxí)",
-      "Pedanía de Artesa (Onda)"
-    ],
-    "zonas_confinadas": [],
-    "agradecimiento": "A todos los profesionales que han trabajado en la extinción - su labor ha permitido avanzar de forma clave"
+    "desconfinados_parciales": [
+      "La Vilavella: Desconfinamiento total (aviso: agua no potable 72h)",
+      "Onda: Desconfinado casco urbano (Nueva Onda confinada, Artesa evacuada)",
+      "Betxí: Desconfinado núcleo urbano (Solaig, Montserrat, Penya Negra confinadas)"
+    ]
   }
 }
