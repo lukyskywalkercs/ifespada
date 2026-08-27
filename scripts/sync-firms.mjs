@@ -6,10 +6,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
 const outDir = join(root, 'public', 'data')
 
-const WEST = -0.65     // Zona estricta Serra d'Espadà
-const EAST = 0.15      // Hasta cerca de la costa pero no demasiado
-const SOUTH = 39.65    // Solo la sierra y alrededores inmediatos
-const NORTH = 40.15    // Norte de la sierra
+const WEST = -0.55     // Centro Serra d'Espadà
+const EAST = -0.10     // Excluye costa e industrias de Almassora/Vila-real
+const SOUTH = 39.70    // Sur de la sierra
+const NORTH = 40.05    // Norte de la sierra
 
 const SOURCES = [
   {
