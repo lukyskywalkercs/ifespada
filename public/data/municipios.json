@@ -1,7 +1,7 @@
 {
   "_instrucciones": "Actualizar manualmente con datos oficiales del Cecopi/Generalitat. Formato: status = 'confined' o 'evacuated'",
   "_fuente_oficial": "CECOPi Generalitat Valenciana - Nota de prensa última hora",
-  "_ultima_actualizacion": "2026-08-27 - Incendio CONTROLADO - Sin municipios afectados",
+  "_ultima_actualizacion": "2026-08-27 - Incendio CONTROLADO (no extinguido) - Sin municipios afectados",
   
   "municipios": [],
   
@@ -13,7 +13,7 @@
   },
   
   "_notas_adicionales": {
-    "estado": "Incendio de la Serra d'Espadà CONTROLADO. Todos los confinamientos y evacuaciones levantados.",
+    "estado": "Incendio de la Serra d'Espadà CONTROLADO por medios de extinción. No está extinguido pero sí estabilizado. Todos los confinamientos y evacuaciones han sido levantados.",
     "fecha_control": "Agosto 2026"
   }
 }
